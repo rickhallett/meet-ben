@@ -21,6 +21,6 @@ ADD app/ /app
 
 RUN chmod +x /app/start.sh
 
-EXPOSE 8080
+EXPOSE 8001
 
 CMD ["/app/start.sh"]
