@@ -1,0 +1,82 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    container_name: "${PROJECT_NAME}_api"
+    depends_on:
+      - database
+      - redis
+    ports:
+      - "127.0.0.1:8080:8080"
+    restart: always
+    volumes:
+      - ./../app/:/app
+  caddy:
+    container_name: "${PROJECT_NAME}_caddy"
+    env_file:
+      - ./.env
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "127.0.0.1:2019:2019"
+      - "443:443"
+    restart: always
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - /var/log/caddy:/var/log/caddy
+      - caddy_config:/config
+      - caddy_data:/data
+  celery_worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.celery
+    container_name: "${PROJECT_NAME}_celery_worker"
+    depends_on:
+      - database
+      - redis
+    restart: always
+    volumes:
+      - ./../app:/app
+  database:
+    image: timescale/timescaledb-ha:pg16
+    container_name: "${PROJECT_NAME}_database"
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+    ports:
+      - "127.0.0.1:5432:5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    container_name: "${PROJECT_NAME}_redis"
+    healthcheck:
+      interval: 30s
+      retries: 5
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      timeout: 10s
+    image: redis:latest
+    ports:
+      - "127.0.0.1:6379:6379"
+    restart: always
+    volumes:
+      - redis_data:/data
+
+volumes:
+  caddy_config:
+  caddy_data:
+  postgres_data:
+  postgres_data_test:
+  redis_data:
+
+networks:
+  default:
+    driver: bridge
+    external: true
+    name: "${PROJECT_NAME}_network"
