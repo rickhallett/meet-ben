@@ -1,18 +1,6 @@
 import os
 
-from dotenv import load_dotenv
-
-"""
-Database Utility Module
-
-This module provides utility functions for database operations.
-It includes methods for retrieving connection strings and managing database sessions.
-"""
-
-load_dotenv()
-
-
-class DatabaseUtils:
+class InternalDB:
     @staticmethod
     def get_connection_string():
         db_host = os.getenv("DATABASE_HOST", "localhost")

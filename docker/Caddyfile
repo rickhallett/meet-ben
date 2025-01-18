@@ -4,5 +4,5 @@
 		format console
 		level info
 	}
-	reverse_proxy api:8001
+	reverse_proxy http://api:8001
 }

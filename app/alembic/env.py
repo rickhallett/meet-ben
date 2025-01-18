@@ -5,8 +5,10 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from database.database_utils import DatabaseUtils
 from database.session import Base
+from database.internal_db import InternalDB
+
+
 
 # This import is required for autogenerate support
 from database.event import *
@@ -43,7 +45,7 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-config.set_main_option("sqlalchemy.url", DatabaseUtils.get_connection_string())
+config.set_main_option("sqlalchemy.url", InternalDB.get_connection_string())
 
 
 def run_migrations_offline() -> None:

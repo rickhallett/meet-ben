@@ -1,13 +1,11 @@
-import json
-from http import HTTPStatus
-
+from pydantic import BaseModel
 from config.celery_config import celery_app
 from database.event import Event
 from database.repository import GenericRepository
+from database.ottomator_db import OttomatorDB
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from starlette.responses import Response
-
 from api.dependencies import db_session
 from api.event_schema import EventSchema
 
@@ -30,14 +28,34 @@ This pattern ensures high availability and responsiveness of the API
 while allowing for potentially long-running processing operations.
 """
 
+class AgentResponse(BaseModel):
+    success: bool
 
 router = APIRouter()
 
+otto_db = OttomatorDB()
 
-@router.post("/", dependencies=[])
-def handle_event(
-    data: EventSchema,
+def register_event(session: Session, request: EventSchema) -> Event:
+    repository = GenericRepository(
+        session=session,
+        model=Event,
+    )
+    event = Event(data=request.model_dump(mode="json"))
+    repository.create(obj=event)
+    return event
+
+def queue_task(event: Event) -> str:
+    task_id = celery_app.send_task(
+        "process_incoming_event",
+        args=[str(event.id)],
+    )
+    return task_id
+
+@router.post("", dependencies=[], response_model=AgentResponse)
+async def handle_ottomator_event(
+    request: EventSchema,
     session: Session = Depends(db_session),
+    authenticated: bool = Depends(otto_db.verify_token)
 ) -> Response:
     """Handles incoming event submissions.
 
@@ -46,8 +64,10 @@ def handle_event(
     a non-blocking pattern to ensure API responsiveness.
 
     Args:
-        data: The event data, validated against EventSchema
+        request: The event data, validated against EventSchema
         session: Database session injected by FastAPI dependency
+                 for access to the internal database
+        authenticated: Boolean indicating if the request is authenticated
 
     Returns:
         Response: 202 Accepted response with task ID
@@ -56,22 +76,70 @@ def handle_event(
         The endpoint returns immediately after queueing the task.
         Use the task ID in the response to check processing status.
     """
-    # Store event in database
-    repository = GenericRepository(
-        session=session,
-        model=Event,
-    )
-    event = Event(data=data.model_dump(mode="json"))
-    repository.create(obj=event)
 
-    # Queue processing task
-    task_id = celery_app.send_task(
-        "process_incoming_event",
-        args=[str(event.id)],
-    )
+    try:
+        # Fetch conversation history from the DB
+        conversation_history = await otto_db.fetch_conversation_history(request.session_id)
 
-    # Return acceptance response
-    return Response(
-        content=json.dumps({"message": f"process_incoming_event started `{task_id}` "}),
-        status_code=HTTPStatus.ACCEPTED,
-    )
+        print(conversation_history)
+        
+        # Convert conversation history to format expected by agent
+        # This will be different depending on your framework (Pydantic AI, LangChain, etc.)
+        messages = [
+            {"role": msg["message"]["type"], "content": msg["message"]["content"]}
+            for msg in conversation_history
+        ]
+
+        print(messages)
+
+        # Register event in internal db
+        event = register_event(session, request)
+
+        # Queue processing task
+        task_id = queue_task(event)
+
+        # Store user's query from ottomator
+        await otto_db.store_message(
+            session_id=request.session_id,
+            message_type="human",
+            content=request.query,
+            data={"request_id": request.request_id, "event_id": event.id, "task_id": task_id}
+        )            
+
+        """
+        TODO:
+        This is where you insert the custom logic to get the response from your agent.
+        Your agent can also insert more records into the database to communicate
+        actions/status as it is handling the user's question/request.
+        Additionally:
+            - Use the 'messages' array defined about for the chat history. This won't include the latest message from the user.
+            - Use request.query for the user's prompt.
+            - Use request.session_id if you need to insert more messages into the DB in the agent logic.
+        """
+        agent_response = "This is a sample agent response..."
+
+        # Store agent's response, display in ottomator
+        await otto_db.store_message(
+            session_id=request.session_id,
+            message_type="ai",
+            content=agent_response,
+            data={"request_id": request.request_id, "event_id": event.id, "task_id": task_id}
+        )
+
+        return AgentResponse(success=True)
+
+    except Exception as e:
+        print(f"Error processing request: {str(e)}")
+        # Store error message, display in ottomator
+        error_message = {
+                "session_id": request.session_id,
+                "message_type": "ai", 
+                "content": "I apologize, but I encountered an error processing your request.",
+                "data": {"error": str(e), "request_id": request.request_id, "event_id": event.id, "task_id": task_id}
+        }
+
+        await otto_db.store_message(
+            **error_message
+        )
+
+        return AgentResponse(success=False)
