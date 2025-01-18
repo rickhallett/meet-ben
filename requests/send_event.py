@@ -1,4 +1,5 @@
 import json
+import os
 import requests
 from pathlib import Path
 
@@ -12,11 +13,11 @@ application for processing and storage in the database.
 Prerequisites:
     - All Docker containers must be running (API, database, vector store)
     - Events must be properly formatted JSON files in the events directory
-    - API endpoint must be accessible (default: http://localhost:8080)
+    - API endpoint must be accessible (default: http://localhost:8001)
 """
 
 
-BASE_URL = "http://localhost:8080/events"
+BASE_URL = "http://localhost:8001/api/ben/"
 EVENTS_DIR = Path(__file__).parent.parent / "requests/events"
 
 
@@ -40,14 +41,14 @@ def send_event(event_file: str):
         event_file: Name of the JSON file to send
     """
     payload = load_event(event_file)
-    response = requests.post(BASE_URL, json=payload)
+    response = requests.post(BASE_URL, json=payload, headers={"Authorization": f"Bearer {os.getenv('API_TOKEN')}"})
 
     print(f"Testing {event_file}:")
     print(f"Status Code: {response.status_code}")
     print(f"Response: {response.text}")
 
-    assert response.status_code == 202
+    assert response.status_code == 200
 
 
 if __name__ == "__main__":
-    send_event(event_file="your-event.json")
+    send_event(event_file="request.json")
