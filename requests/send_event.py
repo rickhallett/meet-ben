@@ -1,7 +1,9 @@
 import json
 import os
 import requests
+import typer
 from pathlib import Path
+from typing import Union, List, Dict
 
 """
 Event Sender Module
@@ -21,34 +23,46 @@ BASE_URL = "http://localhost:8001/api/ben/"
 EVENTS_DIR = Path(__file__).parent.parent / "requests/events"
 
 
-def load_event(event_file: str):
+def load_event(event_file: str) -> Union[Dict, List[Dict]]:
     """Load event data from JSON file.
 
     Args:
         event_file: Name of the JSON file in the events directory
 
     Returns:
-        Dict containing the event data
+        Dict or List[Dict] containing the event data
     """
     with open(EVENTS_DIR / event_file, "r") as f:
         return json.load(f)
 
 
-def send_event(event_file: str):
-    """Send event to the API endpoint for processing.
+def send_event(payload: Dict):
+    """Send a single event to the API endpoint for processing.
 
     Args:
-        event_file: Name of the JSON file to send
+        payload: Dict containing the event data to send
     """
-    payload = load_event(event_file)
     response = requests.post(BASE_URL, json=payload, headers={"Authorization": f"Bearer {os.getenv('API_TOKEN')}"})
-
-    print(f"Testing {event_file}:")
     print(f"Status Code: {response.status_code}")
     print(f"Response: {response.text}")
-
     assert response.status_code == 200
 
 
+def main(event_file: str = typer.Argument(..., help="JSON file containing event data")):
+    """Send events to the API endpoint.
+    Handles both single event objects and arrays of events.
+    """
+    print(f"Processing {event_file}...")
+    data = load_event(event_file)
+    
+    if isinstance(data, list):
+        print(f"Found {len(data)} events to process")
+        for i, event in enumerate(data, 1):
+            print(f"\nProcessing event {i}/{len(data)}")
+            send_event(event)
+    else:
+        send_event(data)
+
+
 if __name__ == "__main__":
-    send_event(event_file="request.json")
+    typer.run(main)
