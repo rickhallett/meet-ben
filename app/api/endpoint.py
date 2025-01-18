@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from starlette.responses import Response
 from api.dependencies import db_session
 from api.event_schema import EventSchema
+from rich import print
 
 """
 Event Submission Endpoint Module
@@ -51,95 +52,119 @@ def queue_task(event: Event) -> str:
     )
     return task_id
 
-@router.post("", dependencies=[], response_model=AgentResponse)
+@router.get("/")
+async def test_endpoint():
+    return AgentResponse(success=True)
+
+@router.post("/")
 async def handle_ottomator_event(
     request: EventSchema,
     session: Session = Depends(db_session),
     authenticated: bool = Depends(otto_db.verify_token)
 ) -> Response:
-    """Handles incoming event submissions.
-
-    This endpoint receives events, stores them in the database,
-    and queues them for asynchronous processing. It implements
-    a non-blocking pattern to ensure API responsiveness.
-
-    Args:
-        request: The event data, validated against EventSchema
-        session: Database session injected by FastAPI dependency
-                 for access to the internal database
-        authenticated: Boolean indicating if the request is authenticated
-
-    Returns:
-        Response: 202 Accepted response with task ID
-
-    Note:
-        The endpoint returns immediately after queueing the task.
-        Use the task ID in the response to check processing status.
-    """
+    """Handles incoming event submissions with granular error handling."""
+    
+    conversation_history = None
+    messages = []
+    event = None
+    task_id = None
 
     try:
-        # Fetch conversation history from the DB
-        conversation_history = await otto_db.fetch_conversation_history(request.session_id)
+        # Fetch conversation history
+        try:
+            conversation_history = await otto_db.fetch_conversation_history(request.session_id)
+            print(f"Conversation history fetched: {conversation_history}")
+        except Exception as e:
+            print(f"Error fetching conversation history: {str(e)}")
+            raise Exception(f"Failed to fetch conversation history: {str(e)}")
 
-        print(conversation_history)
-        
-        # Convert conversation history to format expected by agent
-        # This will be different depending on your framework (Pydantic AI, LangChain, etc.)
-        messages = [
-            {"role": msg["message"]["type"], "content": msg["message"]["content"]}
-            for msg in conversation_history
-        ]
+        # Convert conversation history
+        try:
+            messages = [
+                {"role": msg["message"]["type"], "content": msg["message"]["content"]}
+                for msg in conversation_history
+            ]
+            print(f"Messages converted: {messages}")
+        except Exception as e:
+            print(f"Error converting conversation history: {str(e)}")
+            raise Exception(f"Failed to convert conversation history: {str(e)}")
 
-        print(messages)
-
-        # Register event in internal db
-        event = register_event(session, request)
+        # Register event
+        try:
+            event = register_event(session, request)
+            print(f"Event registered: {event}")
+        except Exception as e:
+            print(f"Error registering event: {str(e)}")
+            raise Exception(f"Failed to register event: {str(e)}")
 
         # Queue processing task
-        task_id = queue_task(event)
+        try:
+            task = queue_task(event)
+            print(f"Task queued: {task}")
+        except Exception as e:
+            print(f"Error queuing task: {str(e)}")
+            raise Exception(f"Failed to queue task: {str(e)}")
 
-        # Store user's query from ottomator
-        await otto_db.store_message(
-            session_id=request.session_id,
-            message_type="human",
-            content=request.query,
-            data={"request_id": request.request_id, "event_id": event.id, "task_id": task_id}
-        )            
+        # Store user's query
+        try:
+            await otto_db.store_message(
+                session_id=str(request.session_id),
+                message_type="human",
+                content=str(request.query),
+                data={
+                    "request_id": str(request.request_id),
+                    "event_id": str(event.id),
+                    "task_id": str(task.id)
+                }
+            )
+        except Exception as e:
+            print(f"Error storing user message: {str(e)}")
+            raise Exception(f"Failed to store user message: {str(e)}")
 
-        """
-        TODO:
-        This is where you insert the custom logic to get the response from your agent.
-        Your agent can also insert more records into the database to communicate
-        actions/status as it is handling the user's question/request.
-        Additionally:
-            - Use the 'messages' array defined about for the chat history. This won't include the latest message from the user.
-            - Use request.query for the user's prompt.
-            - Use request.session_id if you need to insert more messages into the DB in the agent logic.
-        """
-        agent_response = "This is a sample agent response..."
+        # Get agent response (placeholder)
+        try:
+            agent_response = "This is a sample agent response..."
+            print(f"Agent response generated: {agent_response}")
+        except Exception as e:
+            print(f"Error generating agent response: {str(e)}")
+            raise Exception(f"Failed to generate agent response: {str(e)}")
 
-        # Store agent's response, display in ottomator
-        await otto_db.store_message(
-            session_id=request.session_id,
-            message_type="ai",
-            content=agent_response,
-            data={"request_id": request.request_id, "event_id": event.id, "task_id": task_id}
-        )
+        # Store agent's response
+        try:
+            await otto_db.store_message(
+                session_id=str(request.session_id),
+                message_type="ai",
+                content=agent_response,
+                data={
+                    "request_id": str(request.request_id),
+                    "event_id": str(event.id),
+                    "task_id": str(task.id)
+                }
+            )
+        except Exception as e:
+            print(f"Error storing agent response: {str(e)}")
+            raise Exception(f"Failed to store agent response: {str(e)}")
 
         return AgentResponse(success=True)
 
     except Exception as e:
-        print(f"Error processing request: {str(e)}")
-        # Store error message, display in ottomator
-        error_message = {
-                "session_id": request.session_id,
-                "message_type": "ai", 
-                "content": "I apologize, but I encountered an error processing your request.",
-                "data": {"error": str(e), "request_id": request.request_id, "event_id": event.id, "task_id": task_id}
-        }
-
-        await otto_db.store_message(
-            **error_message
-        )
+        print(f"Global error handling: {str(e)}")
+        # Store error message
+        try:
+            await otto_db.store_message(
+                session_id=str(request.session_id),
+                message_type="ai",
+                content="I apologize, but I encountered an error processing your request.",
+                data={
+                    "error": str(e),
+                    "request_id": str(request.request_id),
+                    "event_id": str(event.id) if event else None,
+                    "task_id": str(task.id)
+                }
+            )
+        except Exception as store_error:
+            print(f"Error storing error message: {str(store_error)}")
+            # If we can't even store the error message, log it but don't raise
+            # as we're already in the global error handler
 
         return AgentResponse(success=False)
