@@ -1,8 +1,0 @@
-{$CADDY_DOMAIN} {
-	log {
-		output file /var/log/caddy/{$CADDY_LOG_FILE_NAME}.log
-		format console
-		level info
-	}
-	reverse_proxy http://api:8001
-}

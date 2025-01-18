@@ -12,21 +12,6 @@ services:
     restart: always
     volumes:
       - ./../app/:/app
-  # caddy:
-  #   container_name: "${PROJECT_NAME}_caddy"
-  #   env_file:
-  #     - ./.env
-  #   image: caddy:latest
-  #   ports:
-  #     - "80:80"
-  #     - "127.0.0.1:2019:2019"
-  #     - "443:443"
-  #   restart: always
-  #   volumes:
-  #     - ./Caddyfile:/etc/caddy/Caddyfile
-  #     - /var/log/caddy:/var/log/caddy
-  #     - caddy_config:/config
-  #     - caddy_data:/data
   celery_worker:
     build:
       context: ..
