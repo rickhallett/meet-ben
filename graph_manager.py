@@ -11,6 +11,7 @@ class Node(BaseModel):
     node_id: str
     type: str
     content: str
+    weight: float = 0.5  # Default weight
     timestamps: List[TimeStamp]
 
 class Edge(BaseModel):

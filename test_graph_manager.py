@@ -23,6 +23,7 @@ def test_add_node_with_timestamp():
         node_id="node_1",
         type="test_type",
         content="test_content",
+        weight=0.7,  # Specify a weight
         timestamps=[timestamp]
     )
     add_node_with_timestamp(graph, node)
@@ -30,6 +31,7 @@ def test_add_node_with_timestamp():
     node_data = graph.nodes["node_1"]
     assert node_data["type"] == "test_type"
     assert node_data["content"] == "test_content"
+    assert node_data["weight"] == 0.7  # Test the weight
     assert node_data["timestamps"][0].session_info["session"] == 1
 
 def test_add_edge_with_timestamp():
