@@ -6,7 +6,8 @@ from graph_manager import (
     add_edge_with_timestamp,
     Node,
     Edge,
-    TimeStamp
+    TimeStamp,
+    add_subgraph_under_node
 )
 from datetime import datetime
 
