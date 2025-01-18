@@ -4,6 +4,7 @@ certifi==2024.12.14
 charset-normalizer==3.4.1
 curtsies==0.4.2
 cwcwidth==0.1.9
+graphviz==0.20.1
 greenlet==3.1.1
 idna==3.10
 Pygments==2.19.1

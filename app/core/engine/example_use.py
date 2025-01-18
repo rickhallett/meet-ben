@@ -15,7 +15,7 @@ from .graph_manager import (
     TimeStamp
 )
 
-def main():
+def main() -> nx.DiGraph:
     # First, let's create a graph using pure networkx
     print("\n=== Pure NetworkX Example ===")
     nx_graph = nx.DiGraph()  # DiGraph means "directed graph"
@@ -131,6 +131,64 @@ def main():
         "interest_1_subgraph_skill_2"
     ))
     print("Paths from person to skill_2:", all_paths)
+    
+    return managed_graph
+
+def visualize_graph(graph: nx.DiGraph, output_file: str = "graph_visualization"):
+    """
+    Create a visual representation of the graph using graphviz.
+    
+    Args:
+        graph (nx.DiGraph): The graph to visualize
+        output_file (str): Name of the output file (without extension)
+    """
+    from graphviz import Digraph
+    
+    dot = Digraph(comment='Knowledge Graph Visualization')
+    dot.attr(rankdir='TB')  # Top to bottom layout
+    
+    # Add nodes with styling based on type
+    for node, data in graph.nodes(data=True):
+        # Default style
+        node_style = {
+            'shape': 'box',
+            'style': 'filled',
+            'fillcolor': 'white',
+            'fontname': 'Arial'
+        }
+        
+        # Customize style based on node type
+        if data.get('type') == 'person':
+            node_style.update({'fillcolor': 'lightblue', 'shape': 'ellipse'})
+        elif data.get('type') == 'interest':
+            node_style.update({'fillcolor': 'lightgreen'})
+        elif data.get('type') == 'skill':
+            node_style.update({'fillcolor': 'lightyellow'})
+            
+        # Add node weight to label if present
+        label = f"{node}\n{data.get('content', '')}"
+        if 'weight' in data:
+            label += f"\n(w: {data['weight']:.2f})"
+            
+        dot.node(str(node), label, **node_style)
+    
+    # Add edges with weight labels
+    for source, target, data in graph.edges(data=True):
+        edge_style = {
+            'fontname': 'Arial',
+            'fontsize': '10',
+            'color': 'gray'
+        }
+        
+        # Add edge weight and type to label
+        edge_label = f"{data.get('type', '')}\n(w: {data.get('weight', 0.5):.2f})"
+        
+        dot.edge(str(source), str(target), edge_label, **edge_style)
+    
+    # Save the visualization
+    dot.render(output_file, format='png', cleanup=True)
+    print(f"Graph visualization saved as {output_file}.png")
 
 if __name__ == "__main__":
-    main()
+    graph = main()
+    visualize_graph(graph)
