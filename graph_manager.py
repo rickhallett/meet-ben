@@ -38,6 +38,8 @@ def add_node_with_timestamp(graph: nx.DiGraph, node: Node):
         graph (nx.DiGraph): The graph to add the node to.
         node (Node): The node to add.
     """
+    if node.node_id in graph.nodes:
+        raise ValueError(f"Node ID '{node.node_id}' already exists.")
     graph.add_node(node.node_id, **node.dict())
 
 def add_edge_with_timestamp(graph: nx.DiGraph, edge: Edge):
@@ -48,6 +50,10 @@ def add_edge_with_timestamp(graph: nx.DiGraph, edge: Edge):
         graph (nx.DiGraph): The graph to add the edge to.
         edge (Edge): The edge to add.
     """
+    if edge.source_id not in graph.nodes or edge.target_id not in graph.nodes:
+        raise ValueError("Source or target node does not exist.")
+    if graph.has_edge(edge.source_id, edge.target_id):
+        raise ValueError(f"Edge from '{edge.source_id}' to '{edge.target_id}' already exists.")
     graph.add_edge(edge.source_id, edge.target_id, **edge.dict())
 
 def add_subgraph_under_node(

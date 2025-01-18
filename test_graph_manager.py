@@ -17,6 +17,132 @@ def test_initialize_graph():
     assert len(graph.nodes) == 0
     assert len(graph.edges) == 0
 
+@pytest.mark.parametrize("weight", [0.0, -1.0, 1.5])
+@pytest.mark.parametrize("weight", [0.0, -1.0, 1.5])
+def test_node_with_multiple_timestamps():
+    graph = initialize_graph()
+    timestamp1 = TimeStamp(session_info={"session": 1})
+    timestamp2 = TimeStamp(session_info={"session": 2})
+    node = Node(
+        node_id="node_multiple_timestamps",
+        type="test_type",
+        content="test_content",
+        timestamps=[timestamp1, timestamp2]
+    )
+    add_node_with_timestamp(graph, node)
+    node_data = graph.nodes["node_multiple_timestamps"]
+    assert len(node_data["timestamps"]) == 2
+    assert node_data["timestamps"][0] == timestamp1
+    assert node_data["timestamps"][1] == timestamp2
+
+def test_add_edge_self_loop():
+    graph = initialize_graph()
+    graph.add_node("node_self_loop")
+    timestamp = TimeStamp(session_info={"session": 1})
+    edge = Edge(
+        source_id="node_self_loop",
+        target_id="node_self_loop",
+        type="self_loop_edge",
+        weight=0.5,
+        timestamps=[timestamp]
+    )
+    add_edge_with_timestamp(graph, edge)
+    assert graph.has_edge("node_self_loop", "node_self_loop")
+
+def test_add_edge_with_edge_case_weights(weight):
+    graph = initialize_graph()
+    graph.add_node("node_1")
+    graph.add_node("node_2")
+    timestamp = TimeStamp(session_info={"session": 1})
+    edge = Edge(
+        source_id="node_1",
+        target_id="node_2",
+        type="test_edge",
+        weight=weight,
+        timestamps=[timestamp]
+    )
+    add_edge_with_timestamp(graph, edge)
+    edge_data = graph.get_edge_data("node_1", "node_2")
+    assert edge_data["weight"] == weight
+
+def test_add_duplicate_edge():
+    graph = initialize_graph()
+    graph.add_node("node_1")
+    graph.add_node("node_2")
+    timestamp = TimeStamp(session_info={"session": 1})
+    edge = Edge(
+        source_id="node_1",
+        target_id="node_2",
+        type="test_edge",
+        weight=0.5,
+        timestamps=[timestamp]
+    )
+    add_edge_with_timestamp(graph, edge)
+    with pytest.raises(ValueError):
+        add_edge_with_timestamp(graph, edge)
+
+def test_add_edge_with_nonexistent_nodes():
+    graph = initialize_graph()
+    timestamp = TimeStamp(session_info={"session": 1})
+    edge = Edge(
+        source_id="node_nonexistent_1",
+        target_id="node_nonexistent_2",
+        type="test_edge",
+        weight=0.5,
+        timestamps=[timestamp]
+    )
+    with pytest.raises(ValueError):
+        add_edge_with_timestamp(graph, edge)
+
+def test_add_node_with_duplicate_id():
+    graph = initialize_graph()
+    timestamp = TimeStamp(session_info={"session": 1})
+    node = Node(
+        node_id="duplicate_node",
+        type="test_type",
+        content="test_content",
+        timestamps=[timestamp]
+    )
+    add_node_with_timestamp(graph, node)
+    with pytest.raises(ValueError):
+        add_node_with_timestamp(graph, node)
+
+def test_add_node_missing_required_fields():
+    timestamp = TimeStamp(session_info={"session": 1})
+    with pytest.raises(ValueError):
+        Node(
+            node_id="incomplete_node",
+            type="test_type",
+            # Missing 'content' and 'timestamps'
+        )
+
+def test_add_node_with_edge_case_weights(weight):
+    graph = initialize_graph()
+    timestamp = TimeStamp(session_info={"session": 1})
+    node = Node(
+        node_id=f"node_weight_{weight}",
+        type="test_type",
+        content="test_content",
+        weight=weight,
+        timestamps=[timestamp]
+    )
+    add_node_with_timestamp(graph, node)
+    node_data = graph.nodes[f"node_weight_{weight}"]
+    assert node_data["weight"] == weight
+
+def test_add_node_with_default_weight():
+    graph = initialize_graph()
+    timestamp = TimeStamp(session_info={"session": 1})
+    node = Node(
+        node_id="node_default_weight",
+        type="test_type",
+        content="test_content",
+        timestamps=[timestamp]
+    )
+    add_node_with_timestamp(graph, node)
+    node_data = graph.nodes["node_default_weight"]
+    assert node_data["weight"] == 0.5  # Default weight
+
 def test_add_node_with_timestamp():
     graph = initialize_graph()
     timestamp = TimeStamp(session_info={"session": 1, "note": "Initial creation"})
