@@ -31,6 +31,7 @@ class PipelineRegistry:
 
     pipelines: Dict[str, Type[Pipeline]] = {
         # "support": CustomerSupportPipeline, # Register your pipeline here
+        # "plain_request": PlainRequestPipeline,
     }
 
     @staticmethod
