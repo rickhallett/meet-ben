@@ -1,5 +1,5 @@
 import pytest
-from graph_manager import TimeStamp
+from .graph_manager import TimeStamp
 from datetime import datetime, timedelta
 
 def test_timestamp_missing_session_info():

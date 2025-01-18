@@ -2,9 +2,10 @@ import networkx as nx
 from pydantic import BaseModel
 from typing import List, Dict, Any
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class TimeStamp(BaseModel):
-    timestamp: datetime = datetime.utcnow()
+    timestamp: datetime = datetime.now(ZoneInfo("UTC"))
     session_info: Dict[str, Any]
 
 class Node(BaseModel):

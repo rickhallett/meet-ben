@@ -1,6 +1,6 @@
 import pytest
 import networkx as nx
-from graph_manager import (
+from .graph_manager import (
     initialize_graph,
     add_node_with_timestamp,
     add_edge_with_timestamp,
@@ -17,8 +17,6 @@ def test_initialize_graph():
     assert len(graph.nodes) == 0
     assert len(graph.edges) == 0
 
-@pytest.mark.parametrize("weight", [0.0, -1.0, 1.5])
-@pytest.mark.parametrize("weight", [0.0, -1.0, 1.5])
 def test_node_with_multiple_timestamps():
     graph = initialize_graph()
     timestamp1 = TimeStamp(session_info={"session": 1})
