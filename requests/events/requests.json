@@ -1,0 +1,62 @@
+[
+  {
+    "query": "I would like to build a new ACT clinical formulation",
+    "user_id": "1",
+    "request_id": "test-request-1",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Help me assess psychological flexibility in my client's presenting problems",
+    "user_id": "2",
+    "request_id": "test-request-2",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "How do I identify experiential avoidance patterns in my client's behavior?",
+    "user_id": "1",
+    "request_id": "test-request-3",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "I need help evaluating cognitive fusion in my client's narrative",
+    "user_id": "3",
+    "request_id": "test-request-4",
+    "session_id": "test-session-3"
+  },
+  {
+    "query": "How can I assess my client's values and committed action?",
+    "user_id": "2",
+    "request_id": "test-request-5",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Help me analyze barriers to psychological flexibility in my case formulation",
+    "user_id": "4",
+    "request_id": "test-request-6",
+    "session_id": "test-session-4"
+  },
+  {
+    "query": "What ACT processes should I focus on for anxiety presentation?",
+    "user_id": "1",
+    "request_id": "test-request-7",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "I need help identifying workable and unworkable behaviors in my ACT formulation",
+    "user_id": "5",
+    "request_id": "test-request-8",
+    "session_id": "test-session-5"
+  },
+  {
+    "query": "How do I assess present moment awareness in my clinical formulation?",
+    "user_id": "3",
+    "request_id": "test-request-9",
+    "session_id": "test-session-3"
+  },
+  {
+    "query": "Help me evaluate self-as-context in my client's presentation",
+    "user_id": "4",
+    "request_id": "test-request-10",
+    "session_id": "test-session-4"
+  }
+]
