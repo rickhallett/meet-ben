@@ -49,3 +49,50 @@ def add_edge_with_timestamp(graph: nx.DiGraph, edge: Edge):
         edge (Edge): The edge to add.
     """
     graph.add_edge(edge.source_id, edge.target_id, **edge.dict())
+
+def add_subgraph_under_node(
+    main_graph: nx.DiGraph,
+    parent_node_id: str,
+    subgraph: nx.DiGraph,
+    connecting_edge_type: str,
+    session_info: Dict[str, Any],
+    edge_weight: float = 0.5
+):
+    """
+    Add a subgraph under a parent node in the main graph.
+
+    Args:
+        main_graph (nx.DiGraph): The main graph to which the subgraph will be added.
+        parent_node_id (str): The node ID in the main graph under which the subgraph will be attached.
+        subgraph (nx.DiGraph): The subgraph to be added.
+        connecting_edge_type (str): The type of edge connecting the parent node to the subgraph.
+        session_info (Dict[str, Any]): Session information for timestamps.
+        edge_weight (float, optional): Weight of the connecting edge. Defaults to 0.5.
+
+    Raises:
+        ValueError: If parent_node_id does not exist in main_graph.
+    """
+    if parent_node_id not in main_graph:
+        raise ValueError(f"Parent node {parent_node_id} does not exist in the main graph.")
+
+    # Prefix subgraph node IDs to ensure uniqueness
+    subgraph_prefix = f"{parent_node_id}_subgraph_"
+    mapping = {node: f"{subgraph_prefix}{node}" for node in subgraph.nodes()}
+    relabeled_subgraph = nx.relabel_nodes(subgraph, mapping)
+
+    # Merge the subgraph into the main graph
+    main_graph.update(relabeled_subgraph)
+
+    # Create an edge from the parent node to the root of the subgraph
+    root_subgraph_node_id = list(mapping.values())[0]
+
+    timestamp = TimeStamp(session_info=session_info)
+    edge = Edge(
+        source_id=parent_node_id,
+        target_id=root_subgraph_node_id,
+        type=connecting_edge_type,
+        weight=edge_weight,
+        timestamps=[timestamp]
+    )
+    # Add the connecting edge
+    add_edge_with_timestamp(main_graph, edge)

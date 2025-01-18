@@ -53,3 +53,83 @@ def test_add_edge_with_timestamp():
     assert edge_data["type"] == "test_edge"
     assert edge_data["weight"] == 0.5
     assert edge_data["timestamps"][0].session_info["note"] == "Edge creation"
+
+def test_add_subgraph_under_node():
+    main_graph = initialize_graph()
+
+    # Create parent node in the main graph
+    timestamp_main = TimeStamp(session_info={"session": 1, "note": "Main graph creation"})
+    parent_node = Node(
+        node_id="parent_node",
+        type="main_type",
+        content="Main node content",
+        timestamps=[timestamp_main]
+    )
+    add_node_with_timestamp(main_graph, parent_node)
+
+    # Create a subgraph
+    subgraph = initialize_graph()
+
+    # Subgraph nodes
+    timestamp_sub = TimeStamp(session_info={"session": 1, "note": "Subgraph creation"})
+    sub_node1 = Node(
+        node_id="sub_node_1",
+        type="sub_type",
+        content="Sub node 1 content",
+        timestamps=[timestamp_sub]
+    )
+    sub_node2 = Node(
+        node_id="sub_node_2",
+        type="sub_type",
+        content="Sub node 2 content",
+        timestamps=[timestamp_sub]
+    )
+    add_node_with_timestamp(subgraph, sub_node1)
+    add_node_with_timestamp(subgraph, sub_node2)
+
+    # Subgraph edge
+    sub_edge = Edge(
+        source_id="sub_node_1",
+        target_id="sub_node_2",
+        type="sub_edge_type",
+        weight=0.6,
+        timestamps=[timestamp_sub]
+    )
+    add_edge_with_timestamp(subgraph, sub_edge)
+
+    # Add subgraph under parent node
+    session_info = {"session": 1, "note": "Adding subgraph to main graph"}
+    add_subgraph_under_node(
+        main_graph=main_graph,
+        parent_node_id="parent_node",
+        subgraph=subgraph,
+        connecting_edge_type="subgraph_edge_type",
+        session_info=session_info,
+        edge_weight=0.7
+    )
+
+    # Verify that nodes are added with prefixed IDs
+    expected_node_ids = {
+        "parent_node",
+        "parent_node_subgraph_sub_node_1",
+        "parent_node_subgraph_sub_node_2"
+    }
+    assert set(main_graph.nodes()) == expected_node_ids
+
+    # Verify that the edge connecting parent node to subgraph root exists
+    assert main_graph.has_edge("parent_node", "parent_node_subgraph_sub_node_1")
+    connecting_edge_data = main_graph.get_edge_data("parent_node", "parent_node_subgraph_sub_node_1")
+    assert connecting_edge_data["type"] == "subgraph_edge_type"
+    assert connecting_edge_data["weight"] == 0.7
+
+    # Verify subgraph edge exists with updated node IDs
+    assert main_graph.has_edge(
+        "parent_node_subgraph_sub_node_1",
+        "parent_node_subgraph_sub_node_2"
+    )
+    sub_edge_data = main_graph.get_edge_data(
+        "parent_node_subgraph_sub_node_1",
+        "parent_node_subgraph_sub_node_2"
+    )
+    assert sub_edge_data["type"] == "sub_edge_type"
+    assert sub_edge_data["weight"] == 0.6
