@@ -655,6 +655,30 @@ def find_underexplored_nodes(graph, min_weight_threshold=0.3, max_connectivity=2
             underexplored.append(node_id)
     return underexplored
 
+def suggest_questions_for_node(graph, node_id):
+    """
+    Generate follow-up questions based on the node's content and type.
+
+    Args:
+        graph (nx.DiGraph): The graph containing the node.
+        node_id (str): The node to generate questions for.
+
+    Returns:
+        List[str]: List of suggested questions.
+    """
+    node_data = graph.nodes[node_id]
+    node_type = node_data.get("type", "unknown")
+    content = node_data.get("content", "")
+    
+    questions = []
+    if node_type == "layer-3":
+        questions.append(f"Could you provide more details about '{content}'?")
+    elif node_type == "layer-4":
+        questions.append(f"How does '{content}' relate to other aspects?")
+    else:
+        questions.append(f"Can you elaborate on '{content}'?")
+    
+    return questions
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -669,6 +693,7 @@ class ProgramMode(str, Enum):
     NODES_MISSING_UPDATES = "nmup"
     FULL_GRAPH = "graph"  # default mode when none specified
     FIND_UNDEREXPLORED_NODES = "fun"
+    SUGGEST_QUESTIONS_FOR_NODE = "sqn"
 
 def main(
     mode: Annotated[
@@ -747,6 +772,14 @@ def main(
             underexplored_nodes = find_underexplored_nodes(graph)
             print("Underexplored Nodes:")
             print(underexplored_nodes)
+        case ProgramMode.SUGGEST_QUESTIONS_FOR_NODE:
+            if not node_id:
+                print("Please provide a node_id using --node-id option.")
+            else:
+                questions = suggest_questions_for_node(graph, node_id)
+                print(f"Suggested questions for node '{node_id}':")
+                for question in questions:
+                    print(f"- {question}")
             print(graph)
         
         
