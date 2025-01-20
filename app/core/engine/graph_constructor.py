@@ -758,6 +758,23 @@ def mark_node_as_rejected(graph, node_id, session_info):
         node_data["rejection_history"] = []
     node_data["rejection_history"].append(timestamp.model_dump())
     node_data["rejected"] = True
+
+def identify_conflicts(graph):
+    """
+    Identify nodes or edges with conflicting information.
+
+    Returns:
+        List[Tuple[str, str]]: List of node or edge identifiers with conflicts.
+    """
+    conflicts = []
+    for node_id, data in graph.nodes(data=True):
+        # Example conflict: node marked both as 'explored' and 'rejected'
+        if data.get("explored") and data.get("rejected"):
+            conflicts.append(("node", node_id))
+    
+    # Extend logic to edges if necessary
+    
+    return conflicts
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -777,6 +794,7 @@ class ProgramMode(str, Enum):
     SUMMARIZE_CHANGES_OVER_TIME = "scot"
     INCREASE_NODE_WEIGHT = "inw"
     MARK_NODE_AS_REJECTED = "mnar"
+    IDENTIFY_CONFLICTS = "icf"
 
 def main(
     mode: Annotated[
@@ -879,6 +897,18 @@ def main(
             else:
                 increase_node_weight(graph, node_id)
                 print(f"Increased weight of node '{node_id}'.")
+
+        case ProgramMode.MARK_NODE_AS_REJECTED:
+            if not node_id:
+                print("Please provide a node_id using --node-id option.")
+            else:
+                mark_node_as_rejected(graph, node_id, session_info)
+                print(f"Marked node '{node_id}' as rejected in session {session_id}.")
+
+        case ProgramMode.IDENTIFY_CONFLICTS:
+            conflicts = identify_conflicts(graph)
+            print("Conflicts found:")
+            print(conflicts)
             print(graph)
         
         
