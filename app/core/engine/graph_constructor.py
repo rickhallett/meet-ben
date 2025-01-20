@@ -707,6 +707,25 @@ def get_session_updates(graph, session_id):
                 break
     
     return {"nodes": updated_nodes, "edges": updated_edges}
+
+def summarize_changes_over_time(graph):
+    """
+    Generate a summary of how nodes and edges have evolved over sessions.
+
+    Returns:
+        str: A textual summary of changes.
+    """
+    node_changes = {}
+    for node_id, data in graph.nodes(data=True):
+        session_ids = [ts["session_info"].get("session_id") for ts in data.get("timestamps", [])]
+        if session_ids:
+            node_changes[node_id] = session_ids
+    
+    summary = "Summary of Node Changes:\n"
+    for node_id, sessions in node_changes.items():
+        summary += f"- Node '{node_id}' was updated in sessions: {sorted(set(sessions))}\n"
+    
+    return summary
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -723,6 +742,7 @@ class ProgramMode(str, Enum):
     FIND_UNDEREXPLORED_NODES = "fun"
     SUGGEST_QUESTIONS_FOR_NODE = "sqn"
     GET_SESSION_UPDATES = "gsu"
+    SUMMARIZE_CHANGES_OVER_TIME = "scot"
 
 def main(
     mode: Annotated[
