@@ -799,6 +799,20 @@ def generate_graph_report(graph):
         report += f"- {node_type}: {count}\n"
     
     return report
+
+def find_highly_connected_nodes(graph, min_degree=5):
+    """
+    Identify nodes with a high degree of connections.
+
+    Args:
+        graph (nx.DiGraph): The graph to search.
+        min_degree (int): Minimum degree to consider as highly connected.
+
+    Returns:
+        List[str]: List of node IDs.
+    """
+    return [node for node, degree in graph.degree() if degree >= min_degree]
+
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -820,6 +834,7 @@ class ProgramMode(str, Enum):
     MARK_NODE_AS_REJECTED = "mnar"
     IDENTIFY_CONFLICTS = "icf"
     GENERATE_GRAPH_REPORT = "ggr"
+    FIND_HIGHLY_CONNECTED_NODES = "fhcn"
 
 def main(
     mode: Annotated[
@@ -939,6 +954,12 @@ def main(
         case ProgramMode.GENERATE_GRAPH_REPORT:
             report = generate_graph_report(graph)
             print(report)
+
+        case ProgramMode.FIND_HIGHLY_CONNECTED_NODES:
+            nodes = find_highly_connected_nodes(graph)
+            print("Highly connected nodes:")
+            print(nodes)
+
             print(graph)
         
         
