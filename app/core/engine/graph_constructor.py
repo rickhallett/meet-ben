@@ -18,22 +18,6 @@ app = typer.Typer()
 
 pretty.install()
 
-class TimeStamp(BaseModel):                                                                            
-    timestamp: datetime = datetime.now(ZoneInfo("UTC"))                                                
-    session_info: Dict[str, Any]                                                                       
-                                                                                                        
-    def model_dump(self):                                                                              
-        data = super().model_dump()                                                                    
-        data['timestamp'] = self.timestamp.isoformat()                                                 
-        return data                                                                                    
-                                                                                                        
-    @classmethod                                                                                       
-    def model_validate(cls, data):                                                                     
-        data['timestamp'] = datetime.fromisoformat(data['timestamp'])                                  
-        return cls(**data)
-
-    
-
 class NodeType(str, Enum):
     ROOT = "root"
     LAYER_2 = "layer-2"
@@ -46,7 +30,7 @@ class Node(BaseModel):
     type: NodeType
     content: str
     weight: float = 0.1  # Default weight
-    timestamps: List[TimeStamp]
+    timestamps: List[Dict[str, Any]]
 
 class EdgeType(str, Enum):
     HAS = "has"
@@ -71,7 +55,7 @@ class Edge(BaseModel):
     target_id: str
     type: str
     weight: float = 0.5
-    timestamps: List[TimeStamp]
+    timestamps: List[Dict[str, Any]]
 
 def create_graph():
     """
@@ -83,10 +67,11 @@ def add_node(graph, node_id, content, node_type, session_info, parent_node=None,
     """
     Add a node to the graph using Pydantic models.
     """
-    # Create TimeStamp instance
-    timestamp = TimeStamp(
-        session_info=session_info
-    )
+    # Create timestamp as a dictionary
+    timestamp = {
+        "timestamp": datetime.now(ZoneInfo("UTC")).isoformat(),
+        "session_info": session_info
+    }
     
     # Create Node instance
     node = Node(
@@ -122,7 +107,10 @@ def connect_nodes(graph, source_id, target_id, edge_type, session_info, edge_wei
     """
     Connect two nodes with an edge.
     """
-    timestamp = TimeStamp(session_info=session_info)
+    timestamp = {
+        "timestamp": datetime.now(ZoneInfo("UTC")).isoformat(),
+        "session_info": session_info
+    }
     edge = Edge(source_id=source_id, target_id=target_id, type=edge_type, weight=edge_weight, timestamps=[timestamp])
     graph.add_edge(source_id, target_id, **edge.model_dump())
 
@@ -478,7 +466,7 @@ def find_nodes_by_timestamp(graph, start_time, end_time):
     return [
         n for n, data in graph.nodes(data=True)
         if any(
-            start_time <= TimeStamp(**ts).timestamp <= end_time
+            start_time <= datetime.fromisoformat(ts["timestamp"]) <= end_time
             for ts in data.get("timestamps", [])
         )
     ]
@@ -594,7 +582,7 @@ def mark_node_as_explored(graph, node_id: str, session_info: Dict[str, Any]):
         session_info (Dict[str, Any]): Session metadata (e.g., {'session_id': 2}).
     """
     # Create a new timestamp record
-    timestamp = TimeStamp(session_info=session_info)
+    timestamp = {"timestamp": datetime.now(ZoneInfo("UTC")).isoformat(), "session_info": session_info}
     node_data = graph.nodes[node_id]
 
     # Keep a separate record of when the node was explored
@@ -764,7 +752,8 @@ def mark_node_as_rejected(graph, node_id, session_info):
         node_id (str): The node to mark.
         session_info (Dict[str, Any]): Session metadata.
     """
-    timestamp = TimeStamp(session_info=session_info)
+    timestamp = {"timestamp": datetime.now(ZoneInfo("UTC")).isoformat(), "session_info": session_info}
+
     node_data = graph.nodes[node_id]
     
     if "rejection_history" not in node_data:
@@ -858,17 +847,9 @@ def to_json_store(graph: nx.Graph, filepath='store.json') -> None:
     # Convert the graph to node-link data format suitable for JSON serialization
     data = json_graph.node_link_data(graph, edges="edges")
 
-    # Handle datetime objects in the data (convert them to ISO format strings)
-    def datetime_converter(o: TimeStamp):
-        dt: datetime = o.timestamp
-        if isinstance(dt, datetime):
-            return dt.isoformat()
-        else:
-            raise TypeError(f"Type {type(o)} not serializable")
-
-    # Write the data to a JSON file
+    # Write the data to a JSON file directly
     with open(filepath, 'w') as f:
-        json.dump(data, f, indent=4, default=datetime_converter)
+        json.dump(data, f, indent=4)
 
     print(f"Saved graph to {filepath}")
 
@@ -893,28 +874,6 @@ def from_json_store(filepath='store.json') -> nx.Graph:
     # Reconstruct the graph from node-link data
     graph = json_graph.node_link_graph(data)
 
-    # Convert timestamp strings back to datetime objects in node and edge data
-    for _, node_data in graph.nodes(data=True):
-        if 'timestamps' in node_data:
-            node_data['timestamps'] = [
-                TimeStamp(
-                    timestamp=datetime.fromisoformat(ts['timestamp']),
-                    session_info=ts['session_info']
-                )
-                if isinstance(ts['timestamp'], str) else ts
-                for ts in node_data['timestamps']
-            ]
-
-    for _, _, edge_data in graph.edges(data=True):
-        if 'timestamps' in edge_data:
-            edge_data['timestamps'] = [
-                TimeStamp(
-                    timestamp=datetime.fromisoformat(ts['timestamp']),
-                    session_info=ts['session_info']
-                )
-                if isinstance(ts['timestamp'], str) else ts
-                for ts in edge_data['timestamps']
-            ]
 
     print(f"Loaded graph from {filepath}")
 
