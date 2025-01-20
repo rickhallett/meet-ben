@@ -813,6 +813,27 @@ def find_highly_connected_nodes(graph, min_degree=5):
     """
     return [node for node, degree in graph.degree() if degree >= min_degree]
 
+def get_node_history(graph, node_id):
+    """
+    Retrieve the full history of a node's updates.
+
+    Args:
+        graph (nx.DiGraph): The graph containing the node.
+        node_id (str): The node to inspect.
+
+    Returns:
+        Dict[str, Any]: A dictionary containing the node's history.
+    """
+    node_data = graph.nodes[node_id]
+    history = {
+        "timestamps": node_data.get("timestamps", []),
+        "exploration_history": node_data.get("exploration_history", []),
+        "rejection_history": node_data.get("rejection_history", []),
+        "weights": node_data.get("weight", 0.5),
+        # Include any other relevant historical data
+    }
+    return history
+
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -835,6 +856,7 @@ class ProgramMode(str, Enum):
     IDENTIFY_CONFLICTS = "icf"
     GENERATE_GRAPH_REPORT = "ggr"
     FIND_HIGHLY_CONNECTED_NODES = "fhcn"
+    GET_NODE_HISTORY = "gnh"
 
 def main(
     mode: Annotated[
@@ -960,6 +982,13 @@ def main(
             print("Highly connected nodes:")
             print(nodes)
 
+        case ProgramMode.GET_NODE_HISTORY:
+            if not node_id:
+                print("Please provide a node_id using --node-id option.")
+            else:
+                history = get_node_history(graph, node_id)
+                print(f"History for node '{node_id}':")
+                print(history)
             print(graph)
         
         
