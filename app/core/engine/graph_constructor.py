@@ -7,7 +7,8 @@ import IPython
 import typer
 from typing_extensions import Annotated
 from pydantic import BaseModel
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
+from copy import deepcopy
 import time
 from enum import Enum
 
@@ -142,7 +143,7 @@ def add_nested_nodes(graph, parent_id, nodes_dict, session_info):
                 full_id = f"{current_parent}_{node_id}"
                 add_node(graph, full_id, node_id.replace("_", " ").title(), "layer-4", session_info, current_parent)
 
-def build_complex_graph():
+def build_graph()():
     """
     Build the full graph based on the markdown specification.
     """
@@ -331,7 +332,8 @@ def build_complex_graph():
             "difficult_thoughts",
             "difficult_feelings",
             "difficult_behaviors",
-            "difficult_sensations"
+            "difficult_sensations",
+            "persistant_assumptions"
         ],
         "risk_factors": {
             "suicidal_thoughts": ["past", "present", "future"],
@@ -341,7 +343,7 @@ def build_complex_graph():
             "substance_abuse": ["past", "present", "future"],
             "static_risk_factors": [],
             "protective_factors": [],
-            "escalation_factors": [],
+            "escalating_factors": [],
         },
         "brainstorm": [
             "questions",
@@ -568,6 +570,32 @@ def custom_walk(graph, start_node, condition):
             stack.extend(graph.neighbors(node))
     return visited
 
+def mark_node_as_explored(graph, node_id: str, session_info: Dict[str, Any]):
+    """
+    Mark a node as explored in a particular session.
+    
+    Args:
+        graph (nx.DiGraph): The graph containing the node.
+        node_id (str): The identifier of the node to mark.
+        session_info (Dict[str, Any]): Session metadata (e.g., {'session_id': 2}).
+    """
+    # Create a new timestamp record
+    timestamp = TimeStamp(session_info=session_info)
+    node_data = graph.nodes[node_id]
+
+    # Keep a separate record of when the node was explored
+    if "exploration_history" not in node_data:
+        node_data["exploration_history"] = []
+    node_data["exploration_history"].append(timestamp.model_dump())
+
+    # Optionally store a simple boolean flag
+    node_data["explored"] = True
+
+def find_node_by_id(graph, node_id):
+    return graph.nodes[node_id]
+
+
+
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -578,6 +606,7 @@ class ProgramMode(str, Enum):
     FIND_SHORTEST_PATH = "fsp"
     CUSTOM_WALK = "cwm"
     INSPECT = "ins"
+    MARK_NODE_AS_EXPLORED = "mnae"
     FULL_GRAPH = "graph"  # default mode when none specified
 
 def main(
@@ -611,7 +640,8 @@ def main(
         )
     ] = "has",
 ):
-    graph = build_complex_graph()
+    graph = build_graph()()
+    session_info = {"session_id": 0, "description": "Graph construction"}
     match mode:
         case ProgramMode.VISUALIZE:
             visualize_graph(graph)
@@ -627,6 +657,10 @@ def main(
             print(extract_subgraph(graph, start_node))
         case ProgramMode.FIND_SHORTEST_PATH:
             print(find_shortest_path(graph, start_node, end_node))
+        case ProgramMode.MARK_NODE_AS_EXPLORED:
+            node = find_node_by_id(graph, start_node)
+            mark_node_as_explored(graph, node["node_id"], session_info)
+            inspect(node)
         case ProgramMode.INSPECT:
             for node in graph.nodes:
                 inspect(graph.nodes[node])
