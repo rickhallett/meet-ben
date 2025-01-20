@@ -18,9 +18,21 @@ app = typer.Typer()
 
 pretty.install()
 
-class TimeStamp(BaseModel):
-    timestamp: datetime = datetime.now(ZoneInfo("UTC"))
-    session_info: Dict[str, Any]
+class TimeStamp(BaseModel):                                                                            
+    timestamp: datetime = datetime.now(ZoneInfo("UTC"))                                                
+    session_info: Dict[str, Any]                                                                       
+                                                                                                        
+    def model_dump(self):                                                                              
+        data = super().model_dump()                                                                    
+        data['timestamp'] = self.timestamp.isoformat()                                                 
+        return data                                                                                    
+                                                                                                        
+    @classmethod                                                                                       
+    def model_validate(cls, data):                                                                     
+        data['timestamp'] = datetime.fromisoformat(data['timestamp'])                                  
+        return cls(**data)
+
+    
 
 class NodeType(str, Enum):
     ROOT = "root"
@@ -844,17 +856,21 @@ def to_json_store(graph: nx.Graph, filepath='store.json') -> None:
         filepath (str): The file path where to save the JSON data.
     """
     # Convert the graph to node-link data format suitable for JSON serialization
-    data = json_graph.node_link_data(graph)
+    data = json_graph.node_link_data(graph, edges="edges")
 
     # Handle datetime objects in the data (convert them to ISO format strings)
-    def datetime_converter(o):
-        if isinstance(o, datetime):
-            return o.isoformat()
-        raise TypeError(f"Type {type(o)} not serializable")
+    def datetime_converter(o: TimeStamp):
+        dt: datetime = o.timestamp
+        if isinstance(dt, datetime):
+            return dt.isoformat()
+        else:
+            raise TypeError(f"Type {type(o)} not serializable")
 
     # Write the data to a JSON file
     with open(filepath, 'w') as f:
         json.dump(data, f, indent=4, default=datetime_converter)
+
+    print(f"Saved graph to {filepath}")
 
 def from_json_store(filepath='store.json') -> nx.Graph:
     """
@@ -867,8 +883,12 @@ def from_json_store(filepath='store.json') -> nx.Graph:
         nx.Graph: The reconstructed graph.
     """
     # Read the data from the JSON file
-    with open(filepath, 'r') as f:
-        data = json.load(f)
+    try:
+        with open(filepath, 'r') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        print(f"File {filepath} not found. Building new graph.")
+        return build_graph()
 
     # Reconstruct the graph from node-link data
     graph = json_graph.node_link_graph(data)
@@ -895,6 +915,8 @@ def from_json_store(filepath='store.json') -> nx.Graph:
                 if isinstance(ts['timestamp'], str) else ts
                 for ts in edge_data['timestamps']
             ]
+
+    print(f"Loaded graph from {filepath}")
 
     return graph
 
@@ -988,34 +1010,44 @@ def main(
         )
     ] = "store.json",
 ):
-    graph = build_graph()
+    graph = from_json_store()
     session_info = {"session_id": 0, "description": "Graph construction"}
     match mode:
         case ProgramMode.VISUALIZE:
             visualize_graph(graph)
+
         case ProgramMode.DEPTH_FIRST:
             print(depth_first_walk(graph, start_node))
+
         case ProgramMode.BREADTH_FIRST:
             print(breadth_first_walk(graph, start_node))
+
         case ProgramMode.FIND_NEIGHBORS:
             print(find_neighbors(graph, start_node))
+
         case ProgramMode.TRAVERSE_BY_EDGE_TYPE:
             print(traverse_by_edge_type(graph, start_node, edge_type))
+
         case ProgramMode.EXTRACT_SUBGRAPH:
             print(extract_subgraph(graph, start_node))
+
         case ProgramMode.FIND_SHORTEST_PATH:
             print(find_shortest_path(graph, start_node, end_node))
+
         case ProgramMode.MARK_NODE_AS_EXPLORED:
             node = find_node_by_id(graph, start_node)
             mark_node_as_explored(graph, node["node_id"], session_info)
             inspect(node)
+
         case ProgramMode.NODES_MISSING_UPDATES:
             print(nodes_missing_updates(graph, threshold_sessions=0))
+
         case ProgramMode.INSPECT:
             for node in graph.nodes:
                 inspect(graph.nodes[node])
             for edge in graph.edges:
                 inspect(graph.edges[edge])
+
         case ProgramMode.FIND_UNDEREXPLORED_NODES:
             underexplored_nodes = find_underexplored_nodes(graph)
             print("Underexplored Nodes:")
@@ -1088,6 +1120,8 @@ def main(
 
         case ProgramMode.TEST_SAVE_LOAD:
             test_save_load()
+
+    to_json_store(graph)
 
 if __name__ == "__main__":
     typer.run(main)
