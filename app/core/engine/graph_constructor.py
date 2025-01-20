@@ -845,7 +845,7 @@ def to_json_store(graph: nx.Graph, filepath='store.json') -> None:
         filepath (str): The file path where to save the JSON data.
     """
     # Convert the graph to node-link data format suitable for JSON serialization
-    data = json_graph.node_link_data(graph, edges="edges")
+    data = json_graph.node_link_data(graph)
 
     # Write the data to a JSON file directly
     with open(filepath, 'w') as f:
