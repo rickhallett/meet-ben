@@ -278,20 +278,34 @@ def build_complex_graph():
             "feelings_sensations_urges",
             "specific_situations"
         ],
-        "values_committed_action": [
-            "life_domains_past",
-            "life_domains_present",
-            "life_domains_future",
-            "work_past",
-            "work_present",
-            "work_future",
-            "study_past",
-            "study_present",
-            "study_future",
-            "health_past",
-            "health_present",
-            "health_future"
-        ],
+        "values": {
+            "domains": {
+                "work": ["past", "present", "future"],
+                "education": ["past", "present", "future"],
+                "health": ["past", "present", "future"],
+                "relationships": ["past", "present", "future"],
+                "spirituality": ["past", "present", "future"],
+                "leisure": ["past", "present", "future"],
+                "financial": ["past", "present", "future"],
+                "community": ["past", "present", "future"],
+                "environment": ["past", "present", "future"],
+                "other": ["past", "present", "future"]
+            }
+        },
+        "committed_action": {
+            "domains": {
+                "work": ["past", "present", "future"],
+                "education": ["past", "present", "future"],
+                "health": ["past", "present", "future"],
+                "relationships": ["past", "present", "future"],
+                "spirituality": ["past", "present", "future"],
+                "leisure": ["past", "present", "future"],
+                "financial": ["past", "present", "future"],
+                "community": ["past", "present", "future"],
+                "environment": ["past", "present", "future"],
+                "other": ["past", "present", "future"]
+            }
+        },
         "skills_training": [
             "problem_solving",
             "goal_setting",
