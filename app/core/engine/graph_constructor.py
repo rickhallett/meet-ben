@@ -775,6 +775,30 @@ def identify_conflicts(graph):
     # Extend logic to edges if necessary
     
     return conflicts
+
+def generate_graph_report(graph):
+    """
+    Generate a comprehensive report of the current graph state.
+
+    Returns:
+        str: The generated report.
+    """
+    report = "Graph Report:\n"
+    report += f"Total Nodes: {graph.number_of_nodes()}\n"
+    report += f"Total Edges: {graph.number_of_edges()}\n"
+    
+    # List nodes by type
+    node_types = {}
+    for _, data in graph.nodes(data=True):
+        node_type = data.get("type", "unknown")
+        node_types.setdefault(node_type, 0)
+        node_types[node_type] += 1
+    
+    report += "Nodes by Type:\n"
+    for node_type, count in node_types.items():
+        report += f"- {node_type}: {count}\n"
+    
+    return report
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -795,6 +819,7 @@ class ProgramMode(str, Enum):
     INCREASE_NODE_WEIGHT = "inw"
     MARK_NODE_AS_REJECTED = "mnar"
     IDENTIFY_CONFLICTS = "icf"
+    GENERATE_GRAPH_REPORT = "ggr"
 
 def main(
     mode: Annotated[
@@ -887,6 +912,7 @@ def main(
             updates = get_session_updates(graph, session_id)
             print(f"Updates in session {session_id}:")
             print(updates)
+
         case ProgramMode.SUMMARIZE_CHANGES_OVER_TIME:
             summary = summarize_changes_over_time(graph)
             print(summary)
@@ -909,6 +935,10 @@ def main(
             conflicts = identify_conflicts(graph)
             print("Conflicts found:")
             print(conflicts)
+
+        case ProgramMode.GENERATE_GRAPH_REPORT:
+            report = generate_graph_report(graph)
+            print(report)
             print(graph)
         
         
