@@ -31,7 +31,7 @@ class Node(BaseModel):
     node_id: str
     type: NodeType
     content: str
-    weight: float = 0.5  # Default weight
+    weight: float = 0.1  # Default weight
     timestamps: List[TimeStamp]
 
 class EdgeType(str, Enum):
@@ -633,6 +633,28 @@ def nodes_missing_updates(graph, threshold_sessions: int = 1) -> List[str]:
     return missing
 
 
+def find_underexplored_nodes(graph, min_weight_threshold=0.3, max_connectivity=2):
+    """
+    Identify nodes that are underexplored based on weight and connectivity.
+
+    Args:
+        graph (nx.DiGraph): The graph to search.
+        min_weight_threshold (float): Nodes with weight below this are considered underexplored.
+        max_connectivity (int): Nodes with degree (in + out) less than or equal to this are underexplored.
+
+    Returns:
+        List[str]: List of node IDs that are underexplored.
+    """
+    underexplored = []
+    for node_id, data in graph.nodes(data=True):
+        # print(node_id, data)
+        node_weight = data.get("weight", 0)
+        node_degree = graph.in_degree(node_id) + graph.out_degree(node_id)
+        print(node_weight, node_degree)
+        if node_weight <= min_weight_threshold and node_degree <= max_connectivity:
+            underexplored.append(node_id)
+    return underexplored
+
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -646,6 +668,7 @@ class ProgramMode(str, Enum):
     MARK_NODE_AS_EXPLORED = "mnae"
     NODES_MISSING_UPDATES = "nmup"
     FULL_GRAPH = "graph"  # default mode when none specified
+    FIND_UNDEREXPLORED_NODES = "fun"
 
 def main(
     mode: Annotated[
@@ -677,6 +700,20 @@ def main(
             show_default=True,
         )
     ] = "has",
+    session_id: Annotated[
+        int,
+        typer.Option(
+            help="Session ID for session-specific operations",
+            show_default=True,
+        )
+    ] = 1,
+    node_id: Annotated[
+        str,
+        typer.Option(
+            help="Node ID for node-specific operations",
+            show_default=True,
+        )
+    ] = "",
 ):
     graph = build_graph()
     session_info = {"session_id": 0, "description": "Graph construction"}
@@ -706,7 +743,10 @@ def main(
                 inspect(graph.nodes[node])
             for edge in graph.edges:
                 inspect(graph.edges[edge])
-        case _:  # FULL_GRAPH or unspecified
+        case ProgramMode.FIND_UNDEREXPLORED_NODES:
+            underexplored_nodes = find_underexplored_nodes(graph)
+            print("Underexplored Nodes:")
+            print(underexplored_nodes)
             print(graph)
         
         
