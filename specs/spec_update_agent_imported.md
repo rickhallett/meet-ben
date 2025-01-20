@@ -3,7 +3,13 @@
 
 ## High-Level Objective
 
-- Create a new pydantic-ai agent "UpdateAgent" that will update the graph based on the user's input.
+- Create a new pydantic-ai agent "OchestratorAgent" that orchestrates the other agents, keeps track of which agent is currently running, and passes messages between agents.
+- Create a new pydantic-ai agent "SetupAgent" responsible for capturing the users name, whether they are building a formulation for a new client or one setup previously. SetupAgent modifies user-specific configuration options that have a large impact on the behavior of the other agents. One of the configurations is "assistance_level", which determines the level of assistance provided by the other agents (i.e. higher rate of follow-up questions, more detailed responses, etc.)
+- Create a new pydantic-ai agent "ChatAgent" that captures the users input before passing it to the IntentIdentifier agent. ChatAgent is also responsible for formatting any responses from the other agents into a user-friendly format as specified by its personality configuration ("friendly", "formal", "clinical", "technical"). Any of the other agents are able to immediately make calls to the ChatAgent if they need more information before proceeding with their task. Inputs and outputs of the ChatAgent are added to the message history database, the contents of which drives the chat UI
+- Create a new pydantic-ai agent "DatabaseAgent" that is responsible for storing and retrieving data from the graph database. To prevent excessive calls to the database, the graph is cached and modified in DatabaseAgent instance memory until the user explicitly saves the graph, terminates the session, times out or at a periodic backup interval.
+- Create a new pydantic-ai agent "IntentIdentifier" that will identify the user's intent based on the user's input. If more than one intent is identified, the task will be divided into subtasks and processes will be run sequentially or in parallel depending on the types of tasks identified
+- Create a new pydantic-ai agent "NoteTaker" that will update the graph based on the user's input. NoteTaker communicates with the QuestionAgent to generate further follow-up questions for the user to optionally answer, a queue of which can be sent to the ChatAgent to be displayed to the user as needed
+- Each agent has a predefined system prompt that is sent to LLMs
 
 ## Mid-Level Objective
 
@@ -11,13 +17,20 @@
 - [Each objective should be concrete and measurable]
 - [But not too detailed - save details for implementation notes]
 
-
+- Provide an interface to the graph_construtor.py api by creating wrappers around the necessary functions responsible for graph manipulation
+- Each wrapper is registered as a tool for the agent
+- Transform user queries into one or more requests to update the data graph
+- Identify the data graph nodes that need to be updated
+- Update the data graph nodes
+- Confirm with user what has been updated with a summary of the changes
 
 ## Implementation Notes
 - [Important technical details - what are the important technical details?]
 - [Dependencies and requirements - what are the dependencies and requirements?]
 - [Coding standards to follow - what are the coding standards to follow?]
 - [Other technical guidance - what are other technical guidance?]
+
+- Confirm strictly to pydantic-ai api
 
 ### Examples of pydantic-ai api
 

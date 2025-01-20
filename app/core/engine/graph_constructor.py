@@ -13,6 +13,7 @@ import time
 from enum import Enum
 import json
 from networkx.readwrite import json_graph
+import logfire
 
 app = typer.Typer()
 
@@ -1165,4 +1166,6 @@ def main(
     to_json_store(graph)
 
 if __name__ == "__main__":
+    logfire.configure()  
+    logfire.info('Hello, {name}!', name='world')
     typer.run(main)

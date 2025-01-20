@@ -18,14 +18,9 @@
 ┃   ┃   ┗━━ 🐍 settings.py (658 bytes)
 ┃   ┣━━ 📂 core
 ┃   ┃   ┣━━ 📂 engine
-┃   ┃   ┃   ┣━━ 🐍 example_use.py (6.2 kB)
-┃   ┃   ┃   ┣━━ 📄 formulation.md (8.7 kB)
-┃   ┃   ┃   ┣━━ 🐍 formulation.v2.py (12.2 kB)
-┃   ┃   ┃   ┣━━ 🐍 formulation_graph.py (3.1 kB)
+┃   ┃   ┃   ┣━━ 🐍 graph_constructor.py (39.3 kB)
 ┃   ┃   ┃   ┣━━ 🐍 graph_manager.py (3.5 kB)
-┃   ┃   ┃   ┣━━ 🐍 native_graph.py (5.1 kB)
-┃   ┃   ┃   ┣━━ 🐍 test_graph_manager.py (8.3 kB)
-┃   ┃   ┃   ┗━━ 🐍 test_timestamp.py (896 bytes)
+┃   ┃   ┃   ┗━━ 📄 store.json (329.8 kB)
 ┃   ┃   ┣━━ 🐍 base.py (1.9 kB)
 ┃   ┃   ┣━━ 🐍 llm.py (2.7 kB)
 ┃   ┃   ┣━━ 🐍 pipeline.py (5.4 kB)
@@ -42,6 +37,8 @@
 ┃   ┣━━ 📂 pipelines
 ┃   ┃   ┗━━ 🐍 registry.py (2.3 kB)
 ┃   ┣━━ 📂 prompts
+┃   ┃   ┣━━ 📄 6_pillars_of_act.md (7.1 kB)
+┃   ┃   ┗━━ 📄 formulation.md (9.0 kB)
 ┃   ┣━━ 📂 services
 ┃   ┃   ┣━━ 🐍 llm_factory.py (6.3 kB)
 ┃   ┃   ┣━━ 🐍 prompt_loader.py (4.0 kB)
@@ -49,9 +46,38 @@
 ┃   ┣━━ 📂 tasks
 ┃   ┃   ┗━━ 🐍 tasks.py (1.8 kB)
 ┃   ┣━━ 📂 utils
+┃   ┃   ┣━━ 📂 docs
+┃   ┃   ┃   ┗━━ 📂 pydantic-ai
+┃   ┃   ┃       ┣━━ 📄 agents.html (94.8 kB)
+┃   ┃   ┃       ┣━━ 📄 agents.md (10.3 kB)
+┃   ┃   ┃       ┣━━ 📄 chat-app.html (105.8 kB)
+┃   ┃   ┃       ┣━━ 📄 chat-app.md (13.4 kB)
+┃   ┃   ┃       ┣━━ 📄 dependencies.html (80.3 kB)
+┃   ┃   ┃       ┣━━ 📄 dependencies.md (9.6 kB)
+┃   ┃   ┃       ┣━━ 📄 graph.html (141.0 kB)
+┃   ┃   ┃       ┣━━ 📄 graph.md (5.4 kB)
+┃   ┃   ┃       ┣━━ 📄 logfire.html (48.1 kB)
+┃   ┃   ┃       ┣━━ 📄 logfire.md (4.5 kB)
+┃   ┃   ┃       ┣━━ 📄 message-history.html (60.3 kB)
+┃   ┃   ┃       ┣━━ 📄 message-history.md (10.4 kB)
+┃   ┃   ┃       ┣━━ 📄 models.html (107.4 kB)
+┃   ┃   ┃       ┣━━ 📄 models.md (15.0 kB)
+┃   ┃   ┃       ┣━━ 📄 multi-agent-applications.html (79.2 kB)
+┃   ┃   ┃       ┣━━ 📄 multi-agent-applications.md (8.0 kB)
+┃   ┃   ┃       ┣━━ 📄 rag.html (74.5 kB)
+┃   ┃   ┃       ┣━━ 📄 rag.md (9.7 kB)
+┃   ┃   ┃       ┣━━ 📄 results.html (73.7 kB)
+┃   ┃   ┃       ┣━━ 📄 results.md (12.0 kB)
+┃   ┃   ┃       ┣━━ 📄 sql-gen.html (60.5 kB)
+┃   ┃   ┃       ┣━━ 📄 sql-gen.md (6.3 kB)
+┃   ┃   ┃       ┣━━ 📄 testing-evals.html (103.1 kB)
+┃   ┃   ┃       ┣━━ 📄 testing-evals.md (15.6 kB)
+┃   ┃   ┃       ┣━━ 📄 tools.html (80.3 kB)
+┃   ┃   ┃       ┗━━ 📄 tools.md (7.2 kB)
+┃   ┃   ┣━━ 🐍 crawl_single_page.py (3.8 kB)
 ┃   ┃   ┣━━ 🐍 event_factory.py (3.3 kB)
 ┃   ┃   ┣━━ 🐍 insert_vectors.py (2.3 kB)
-┃   ┃   ┣━━ 📄 tree.html (55.8 kB)
+┃   ┃   ┣━━ 📄 tree.html (32.0 kB)
 ┃   ┃   ┣━━ 🐍 tree.py (2.8 kB)
 ┃   ┃   ┣━━ 📄 tree.txt (5.4 kB)
 ┃   ┃   ┗━━ 🐍 visualize_pipeline.py (2.7 kB)
@@ -60,7 +86,7 @@
 ┃   ┣━━ 📄 makemigration.sh (232 bytes)
 ┃   ┣━━ 📄 migrate.sh (94 bytes)
 ┃   ┣━━ 📄 pyproject.toml (293 bytes)
-┃   ┣━━ 📄 requirements.txt (2.0 kB)
+┃   ┣━━ 📄 requirements.txt (2.7 kB)
 ┃   ┗━━ 📄 start.sh (165 bytes)
 ┣━━ 📂 data
 ┣━━ 📂 docker
@@ -99,6 +125,7 @@
 ┃   ┃   ┃   ┗━━ 📄 06-development-workflow.md (5.3 kB)
 ┃   ┃   ┗━━ 📂 05-concepts
 ┃   ┃       ┗━━ 📄 01-philosopy.md (4.8 kB)
+┃   ┣━━ 📂 pydantic-ai
 ┃   ┗━━ 📄 README.md (1.9 kB)
 ┣━━ 📂 playground
 ┃   ┗━━ 🐍 playground.py (177 bytes)
@@ -108,8 +135,13 @@
 ┃   ┃   ┗━━ 📄 requests.json (1.8 kB)
 ┃   ┗━━ 🐍 send_event.py (2.0 kB)
 ┣━━ 📂 specs
+┃   ┣━━ 🐍 import_files.py (1.6 kB)
 ┃   ┣━━ 📄 spec_graph_poc.md (6.4 kB)
-┃   ┗━━ 📄 spec_template.example.md (1.8 kB)
+┃   ┣━━ 📄 spec_template.example.md (1.8 kB)
+┃   ┣━━ 📄 spec_update_agent copy.md (4.2 kB)
+┃   ┣━━ 📄 spec_update_agent.md (17.0 kB)
+┃   ┗━━ 📄 spec_update_agent_imported.md (0 bytes)
+┣━━ 📂 tests
 ┣━━ 📄 LICENSE (3.1 kB)
 ┣━━ 📄 pyrightconfig.json (29 bytes)
 ┗━━ 📄 README.md (7.7 kB)
