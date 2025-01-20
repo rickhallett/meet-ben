@@ -143,7 +143,7 @@ def add_nested_nodes(graph, parent_id, nodes_dict, session_info):
                 full_id = f"{current_parent}_{node_id}"
                 add_node(graph, full_id, node_id.replace("_", " ").title(), "layer-4", session_info, current_parent)
 
-def build_graph()():
+def build_graph():
     """
     Build the full graph based on the markdown specification.
     """
@@ -594,6 +594,43 @@ def mark_node_as_explored(graph, node_id: str, session_info: Dict[str, Any]):
 def find_node_by_id(graph, node_id):
     return graph.nodes[node_id]
 
+def nodes_missing_updates(graph, threshold_sessions: int = 1) -> List[str]:
+    """
+    Return nodes that haven't been updated for a specified number of sessions.
+
+    Args:
+        graph (nx.DiGraph): The graph to search.
+        threshold_sessions (int): Session gap. 
+                                  If the last update for a node is `threshold_sessions` behind 
+                                  the maximum session in the graph, it's considered missing an update.
+
+    Returns:
+        List[str]: A list of node IDs that need updates.
+    """
+    all_session_ids = [
+        ts["session_info"].get("session_id", 0)
+        for _, data in graph.nodes(data=True)
+        for ts in data.get("timestamps", [])
+    ]
+    if not all_session_ids:
+        # No session timestamps found in the entire graph
+        return list(graph.nodes())
+
+    current_session_id = max(all_session_ids)
+    missing = []
+
+    for node_id, data in graph.nodes(data=True):
+        node_session_ids = [ts["session_info"].get("session_id", 0) for ts in data.get("timestamps", [])]
+
+        if not node_session_ids:
+            # Node has no timestamps at all
+            missing.append(node_id)
+        else:
+            # If the most recent session is behind the current session by threshold_sessions
+            if max(node_session_ids) <= current_session_id - threshold_sessions:
+                missing.append(node_id)
+
+    return missing
 
 
 class ProgramMode(str, Enum):
@@ -607,6 +644,7 @@ class ProgramMode(str, Enum):
     CUSTOM_WALK = "cwm"
     INSPECT = "ins"
     MARK_NODE_AS_EXPLORED = "mnae"
+    NODES_MISSING_UPDATES = "nmup"
     FULL_GRAPH = "graph"  # default mode when none specified
 
 def main(
@@ -640,7 +678,7 @@ def main(
         )
     ] = "has",
 ):
-    graph = build_graph()()
+    graph = build_graph()
     session_info = {"session_id": 0, "description": "Graph construction"}
     match mode:
         case ProgramMode.VISUALIZE:
@@ -661,6 +699,8 @@ def main(
             node = find_node_by_id(graph, start_node)
             mark_node_as_explored(graph, node["node_id"], session_info)
             inspect(node)
+        case ProgramMode.NODES_MISSING_UPDATES:
+            print(nodes_missing_updates(graph, threshold_sessions=0))
         case ProgramMode.INSPECT:
             for node in graph.nodes:
                 inspect(graph.nodes[node])
