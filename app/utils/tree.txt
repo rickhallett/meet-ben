@@ -1,0 +1,115 @@
+📂 /Users/oceanheart/Documents/code/meet-ben
+┣━━ 📂 app
+┃   ┣━━ 📂 alembic
+┃   ┃   ┣━━ 📂 versions
+┃   ┃   ┃   ┗━━ 🐍 fecc3d257750_init_event.py (1.0 kB)
+┃   ┃   ┣━━ 🐍 env.py (2.5 kB)
+┃   ┃   ┗━━ 📄 script.py.mako (635 bytes)
+┃   ┣━━ 📂 api
+┃   ┃   ┣━━ 🐍 dependencies.py (567 bytes)
+┃   ┃   ┣━━ 🐍 endpoint.py (6.0 kB)
+┃   ┃   ┣━━ 🐍 event_schema.py (929 bytes)
+┃   ┃   ┣━━ 🐍 router.py (339 bytes)
+┃   ┃   ┗━━ 📄 test_endpoint.sh (299 bytes)
+┃   ┣━━ 📂 config
+┃   ┃   ┣━━ 🐍 celery_config.py (1.0 kB)
+┃   ┃   ┣━━ 🐍 database_config.py (1.2 kB)
+┃   ┃   ┣━━ 🐍 llm_config.py (1.2 kB)
+┃   ┃   ┗━━ 🐍 settings.py (658 bytes)
+┃   ┣━━ 📂 core
+┃   ┃   ┣━━ 📂 engine
+┃   ┃   ┃   ┣━━ 🐍 example_use.py (6.2 kB)
+┃   ┃   ┃   ┣━━ 📄 formulation.md (8.7 kB)
+┃   ┃   ┃   ┣━━ 🐍 formulation.v2.py (12.2 kB)
+┃   ┃   ┃   ┣━━ 🐍 formulation_graph.py (3.1 kB)
+┃   ┃   ┃   ┣━━ 🐍 graph_manager.py (3.5 kB)
+┃   ┃   ┃   ┣━━ 🐍 native_graph.py (5.1 kB)
+┃   ┃   ┃   ┣━━ 🐍 test_graph_manager.py (8.3 kB)
+┃   ┃   ┃   ┗━━ 🐍 test_timestamp.py (896 bytes)
+┃   ┃   ┣━━ 🐍 base.py (1.9 kB)
+┃   ┃   ┣━━ 🐍 llm.py (2.7 kB)
+┃   ┃   ┣━━ 🐍 pipeline.py (5.4 kB)
+┃   ┃   ┣━━ 🐍 router.py (2.1 kB)
+┃   ┃   ┣━━ 🐍 schema.py (2.1 kB)
+┃   ┃   ┣━━ 🐍 task.py (1.3 kB)
+┃   ┃   ┗━━ 🐍 validate.py (4.5 kB)
+┃   ┣━━ 📂 database
+┃   ┃   ┣━━ 🐍 event.py (1.8 kB)
+┃   ┃   ┣━━ 🐍 internal_db.py (455 bytes)
+┃   ┃   ┣━━ 🐍 ottomator_db.py (2.8 kB)
+┃   ┃   ┣━━ 🐍 repository.py (1.6 kB)
+┃   ┃   ┗━━ 🐍 session.py (383 bytes)
+┃   ┣━━ 📂 pipelines
+┃   ┃   ┗━━ 🐍 registry.py (2.3 kB)
+┃   ┣━━ 📂 prompts
+┃   ┣━━ 📂 services
+┃   ┃   ┣━━ 🐍 llm_factory.py (6.3 kB)
+┃   ┃   ┣━━ 🐍 prompt_loader.py (4.0 kB)
+┃   ┃   ┗━━ 🐍 vector_store.py (13.5 kB)
+┃   ┣━━ 📂 tasks
+┃   ┃   ┗━━ 🐍 tasks.py (1.8 kB)
+┃   ┣━━ 📂 utils
+┃   ┃   ┣━━ 🐍 event_factory.py (3.3 kB)
+┃   ┃   ┣━━ 🐍 insert_vectors.py (2.3 kB)
+┃   ┃   ┣━━ 📄 tree.html (55.8 kB)
+┃   ┃   ┣━━ 🐍 tree.py (2.8 kB)
+┃   ┃   ┣━━ 📄 tree.txt (5.4 kB)
+┃   ┃   ┗━━ 🐍 visualize_pipeline.py (2.7 kB)
+┃   ┣━━ 📄 alembic.ini (3.5 kB)
+┃   ┣━━ 🐍 main.py (326 bytes)
+┃   ┣━━ 📄 makemigration.sh (232 bytes)
+┃   ┣━━ 📄 migrate.sh (94 bytes)
+┃   ┣━━ 📄 pyproject.toml (293 bytes)
+┃   ┣━━ 📄 requirements.txt (2.0 kB)
+┃   ┗━━ 📄 start.sh (165 bytes)
+┣━━ 📂 data
+┣━━ 📂 docker
+┃   ┣━━ 📄 docker-compose.yml (1.4 kB)
+┃   ┣━━ 📄 Dockerfile.api (419 bytes)
+┃   ┣━━ 📄 Dockerfile.celery (627 bytes)
+┃   ┣━━ 📄 logs.sh (82 bytes)
+┃   ┗━━ 📄 start.sh (379 bytes)
+┣━━ 📂 docs
+┃   ┣━━ 📂 engine
+┃   ┃   ┣━━ 📄 draft_implementation_plan.md (3.3 kB)
+┃   ┃   ┗━━ 📄 overview.md (8.4 kB)
+┃   ┣━━ 📂 launchpad
+┃   ┃   ┣━━ 📂 01-getting-started
+┃   ┃   ┃   ┣━━ 📄 01-introduction.md (2.9 kB)
+┃   ┃   ┃   ┣━━ 📄 02-installation.md (2.7 kB)
+┃   ┃   ┃   ┗━━ 📄 03-quick-start.md (7.1 kB)
+┃   ┃   ┣━━ 📂 02-architecture
+┃   ┃   ┃   ┣━━ 📄 01-overview.md (5.8 kB)
+┃   ┃   ┃   ┣━━ 📄 02-core-system.md (6.1 kB)
+┃   ┃   ┃   ┣━━ 📄 03-pipeline-design.md (11.9 kB)
+┃   ┃   ┃   ┣━━ 📄 04-worker-system.md (5.1 kB)
+┃   ┃   ┃   ┗━━ 📄 05-diagram.md (3.3 kB)
+┃   ┃   ┣━━ 📂 03-core-components
+┃   ┃   ┃   ┣━━ 📄 01-api-reference.md (5.0 kB)
+┃   ┃   ┃   ┣━━ 📄 02-database.md (6.3 kB)
+┃   ┃   ┃   ┣━━ 📄 03-vector-store.md (4.5 kB)
+┃   ┃   ┃   ┣━━ 📄 04-llm-factory.md (6.8 kB)
+┃   ┃   ┃   ┗━━ 📄 05-prompt-management.md (5.4 kB)
+┃   ┃   ┣━━ 📂 04-guides
+┃   ┃   ┃   ┣━━ 📄 01-configuration.md (4.8 kB)
+┃   ┃   ┃   ┣━━ 📄 02-docker-infrastructure.md (4.4 kB)
+┃   ┃   ┃   ┣━━ 📄 03-testing-events.md (5.2 kB)
+┃   ┃   ┃   ┣━━ 📄 04-deployment.md (4.6 kB)
+┃   ┃   ┃   ┣━━ 📄 05-troubleshooting.md (1.4 kB)
+┃   ┃   ┃   ┗━━ 📄 06-development-workflow.md (5.3 kB)
+┃   ┃   ┗━━ 📂 05-concepts
+┃   ┃       ┗━━ 📄 01-philosopy.md (4.8 kB)
+┃   ┗━━ 📄 README.md (1.9 kB)
+┣━━ 📂 playground
+┃   ┗━━ 🐍 playground.py (177 bytes)
+┣━━ 📂 requests
+┃   ┣━━ 📂 events
+┃   ┃   ┣━━ 📄 request.json (147 bytes)
+┃   ┃   ┗━━ 📄 requests.json (1.8 kB)
+┃   ┗━━ 🐍 send_event.py (2.0 kB)
+┣━━ 📂 specs
+┃   ┣━━ 📄 spec_graph_poc.md (6.4 kB)
+┃   ┗━━ 📄 spec_template.example.md (1.8 kB)
+┣━━ 📄 LICENSE (3.1 kB)
+┣━━ 📄 pyrightconfig.json (29 bytes)
+┗━━ 📄 README.md (7.7 kB)
