@@ -679,6 +679,34 @@ def suggest_questions_for_node(graph, node_id):
         questions.append(f"Can you elaborate on '{content}'?")
     
     return questions
+
+def get_session_updates(graph, session_id):
+    """
+    Retrieve all updates made in a particular session.
+
+    Args:
+        graph (nx.DiGraph): The graph to search.
+        session_id (int): The session ID to filter updates.
+
+    Returns:
+        Dict[str, Any]: A dictionary with nodes and edges updated in the session.
+    """
+    updated_nodes = {}
+    updated_edges = {}
+    
+    for node_id, data in graph.nodes(data=True):
+        for ts in data.get("timestamps", []):
+            if ts["session_info"].get("session_id") == session_id:
+                updated_nodes[node_id] = data
+                break
+    
+    for u, v, data in graph.edges(data=True):
+        for ts in data.get("timestamps", []):
+            if ts["session_info"].get("session_id") == session_id:
+                updated_edges[(u, v)] = data
+                break
+    
+    return {"nodes": updated_nodes, "edges": updated_edges}
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -694,6 +722,7 @@ class ProgramMode(str, Enum):
     FULL_GRAPH = "graph"  # default mode when none specified
     FIND_UNDEREXPLORED_NODES = "fun"
     SUGGEST_QUESTIONS_FOR_NODE = "sqn"
+    GET_SESSION_UPDATES = "gsu"
 
 def main(
     mode: Annotated[
@@ -772,6 +801,7 @@ def main(
             underexplored_nodes = find_underexplored_nodes(graph)
             print("Underexplored Nodes:")
             print(underexplored_nodes)
+
         case ProgramMode.SUGGEST_QUESTIONS_FOR_NODE:
             if not node_id:
                 print("Please provide a node_id using --node-id option.")
@@ -780,6 +810,11 @@ def main(
                 print(f"Suggested questions for node '{node_id}':")
                 for question in questions:
                     print(f"- {question}")
+
+        case ProgramMode.GET_SESSION_UPDATES:
+            updates = get_session_updates(graph, session_id)
+            print(f"Updates in session {session_id}:")
+            print(updates)
             print(graph)
         
         
