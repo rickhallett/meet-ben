@@ -726,6 +726,20 @@ def summarize_changes_over_time(graph):
         summary += f"- Node '{node_id}' was updated in sessions: {sorted(set(sessions))}\n"
     
     return summary
+def increase_node_weight(graph, node_id, increment=0.1, max_weight=1.0):
+    """
+    Increase the weight of a node, capping at max_weight.
+
+    Args:
+        graph (nx.DiGraph): The graph containing the node.
+        node_id (str): The node to update.
+        increment (float): The amount to increase the weight by.
+        max_weight (float): The maximum allowable weight.
+    """
+    node_data = graph.nodes[node_id]
+    current_weight = node_data.get("weight", 0.3)
+    new_weight = min(current_weight + increment, max_weight)
+    node_data["weight"] = new_weight
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -743,6 +757,7 @@ class ProgramMode(str, Enum):
     SUGGEST_QUESTIONS_FOR_NODE = "sqn"
     GET_SESSION_UPDATES = "gsu"
     SUMMARIZE_CHANGES_OVER_TIME = "scot"
+    INCREASE_NODE_WEIGHT = "inw"
 
 def main(
     mode: Annotated[
@@ -835,6 +850,16 @@ def main(
             updates = get_session_updates(graph, session_id)
             print(f"Updates in session {session_id}:")
             print(updates)
+        case ProgramMode.SUMMARIZE_CHANGES_OVER_TIME:
+            summary = summarize_changes_over_time(graph)
+            print(summary)
+
+        case ProgramMode.INCREASE_NODE_WEIGHT:
+            if not node_id:
+                print("Please provide a node_id using --node-id option.")
+            else:
+                increase_node_weight(graph, node_id)
+                print(f"Increased weight of node '{node_id}'.")
             print(graph)
         
         
