@@ -891,84 +891,167 @@ def test_save_load():
     assert nx.is_isomorphic(graph, restored_graph)
 
 class ProgramMode(str, Enum):
-    VISUALIZE = "vis"
-    DEPTH_FIRST = "dfs"
-    BREADTH_FIRST = "bfs"
-    FIND_NEIGHBORS = "fnn"
-    TRAVERSE_BY_EDGE_TYPE = "tbe"
-    EXTRACT_SUBGRAPH = "esg"
-    FIND_SHORTEST_PATH = "fsp"
-    CUSTOM_WALK = "cwm"
-    INSPECT = "ins"
-    MARK_NODE_AS_EXPLORED = "mnae"
-    NODES_MISSING_UPDATES = "nmup"
-    SAVE_GRAPH = "save"
-    LOAD_GRAPH = "load"
-    FULL_GRAPH = "graph"  # default mode when none specified
-    FIND_UNDEREXPLORED_NODES = "fun"
-    SUGGEST_QUESTIONS_FOR_NODE = "sqn"
-    GET_SESSION_UPDATES = "gsu"
-    SUMMARIZE_CHANGES_OVER_TIME = "scot"
-    INCREASE_NODE_WEIGHT = "inw"
-    MARK_NODE_AS_REJECTED = "mnar"
-    IDENTIFY_CONFLICTS = "icf"
-    GENERATE_GRAPH_REPORT = "ggr"
-    FIND_HIGHLY_CONNECTED_NODES = "fhcn"
-    GET_NODE_HISTORY = "gnh"
-    TEST_SAVE_LOAD = "tsl"
+    """Available operation modes for the graph analysis tool"""
+    
+    VISUALIZE = "visualise"  # Visualize graph structure
+    DEPTH_FIRST = "depth-first-search"  # Depth-first search traversal
+    BREADTH_FIRST = "breadth-first-search"  # Breadth-first search traversal
+    FIND_NEIGHBORS = "find-neighbors"  # Find neighboring nodes
+    TRAVERSE_BY_EDGE_TYPE = "traverse-by-edge"  # Traverse by edge type
+    EXTRACT_SUBGRAPH = "extract-subgraph"  # Extract subgraph
+    FIND_SHORTEST_PATH = "find-shortest-path"  # Find shortest path
+    CUSTOM_WALK = "custom-walk"  # Custom walk
+    INSPECT = "inspect"  # Inspect nodes/edges
+    MARK_NODE_AS_EXPLORED = "mark-explored"  # Mark node as explored
+    NODES_MISSING_UPDATES = "find-missing-updates"  # Find nodes needing updates
+    SAVE_GRAPH = "save"  # Save graph to file
+    LOAD_GRAPH = "load"  # Load graph from file
+    FULL_GRAPH = "show-graph"  # Show full graph
+    FIND_UNDEREXPLORED_NODES = "find-underexplored"  # Find underexplored nodes
+    SUGGEST_QUESTIONS_FOR_NODE = "suggest-questions"  # Suggest node questions
+    GET_SESSION_UPDATES = "session-updates"  # Get session updates
+    SUMMARIZE_CHANGES_OVER_TIME = "summarize-changes"  # Summarize changes
+    INCREASE_NODE_WEIGHT = "increase-weight"  # Increase node weight
+    MARK_NODE_AS_REJECTED = "mark-rejected"  # Mark node as rejected
+    IDENTIFY_CONFLICTS = "find-conflicts"  # Identify conflicts
+    GENERATE_GRAPH_REPORT = "generate-report"  # Generate graph report
+    FIND_HIGHLY_CONNECTED_NODES = "find-connected"  # Find highly connected nodes
+    GET_NODE_HISTORY = "node-history"  # Get node history
+    TEST_SAVE_LOAD = "test-save-load"  # Test save/load
 
 def main(
     mode: Annotated[
         ProgramMode,
         typer.Option(
-            help="Program mode",
+            "--mode", "-m",
+            help="\n".join([
+                "Operation mode for the graph tool:",
+                "🔍 Traversal:",
+                "  visualise           - Visualize graph structure",
+                "  depth-first-search  - Depth-first search traversal",
+                "  breadth-first-search- Breadth-first search traversal",
+                "  find-neighbors      - Find neighboring nodes",
+                "  traverse-by-edge    - Traverse by edge type",
+                "  extract-subgraph    - Extract subgraph",
+                "  find-shortest-path  - Find shortest path",
+                "  custom-walk         - Custom walk",
+                "📊 Analysis:",
+                "  inspect            - Inspect nodes/edges",
+                "  find-underexplored - Find underexplored nodes",
+                "  find-conflicts     - Find conflicts",
+                "  generate-report    - Generate graph report",
+                "  find-connected     - Find highly connected nodes",
+                "  node-history       - Get node history",
+                "💾 Persistence:",
+                "  save              - Save graph to file",
+                "  load              - Load graph from file",
+                "  test-save-load    - Test save/load",
+                "🔄 Session:",
+                "  mark-explored     - Mark node as explored",
+                "  find-missing-updates - Find nodes needing updates",
+                "  suggest-questions - Suggest node questions",
+                "  session-updates   - Get session updates",
+                "  summarize-changes - Summarize changes",
+                "  increase-weight   - Increase node weight",
+                "  mark-rejected     - Mark node as rejected",
+            ]),
             case_sensitive=False,
             show_choices=True,
+            rich_help_panel="Operation Mode"
         )
     ] = ProgramMode.FULL_GRAPH,
     start_node: Annotated[
         str,
         typer.Option(
-            help="Start node for traversal operations",
+            "--start-node", "-s",
+            help="Starting node for traversal operations (e.g., DFS, BFS)",
             show_default=True,
+            rich_help_panel="Node Operations"
         )
     ] = "formulation",
     end_node: Annotated[
         str,
         typer.Option(
-            help="End node for traversal operations",
+            "--end-node", "-e",
+            help="Target node for path-finding operations",
             show_default=True,
+            rich_help_panel="Node Operations"
         )
     ] = "formulation",
     edge_type: Annotated[
         str,
         typer.Option(
-            help="Edge type for traversal operations",
+            "--edge-type", "-t",
+            help="Type of edge for traversal (e.g., 'has', 'contains')",
             show_default=True,
+            rich_help_panel="Edge Operations"
         )
     ] = "has",
     session_id: Annotated[
         int,
         typer.Option(
-            help="Session ID for session-specific operations",
+            "--session-id", "-i",
+            help="Session identifier for tracking graph modifications",
             show_default=True,
+            rich_help_panel="Session Management"
         )
     ] = 1,
     node_id: Annotated[
         str,
         typer.Option(
-            help="Node ID for node-specific operations",
+            "--node-id", "-n",
+            help="Target node identifier for node-specific operations",
             show_default=True,
+            rich_help_panel="Node Operations"
         )
     ] = "",
     filepath: Annotated[
         str,
         typer.Option(
-            help="File path for saving/loading the graph",
+            "--filepath", "-f",
+            help="Path to the JSON file for graph persistence",
             show_default=True,
+            rich_help_panel="File Operations"
         )
     ] = "store.json",
-):
+) -> None:
+    """
+    Graph Analysis and Manipulation Tool
+
+    This tool provides various operations for analyzing and manipulating graph structures:
+
+    🔍 Traversal Operations:
+    - vis: Visualize the graph structure using matplotlib
+    - dfs: Perform depth-first search traversal from start node
+    - bfs: Perform breadth-first search traversal from start node
+    - fnn: Find all neighboring nodes of a given node
+    - tbe: Follow edges of a specific type from start node
+    - esg: Create a subgraph from all nodes reachable from start
+    - fsp: Find shortest path between two nodes
+    - cwm: Perform custom graph walk based on conditions
+
+    📊 Analysis Operations:
+    - ins: Inspect and display all node and edge details
+    - fun: Find nodes with low weight and connectivity
+    - icf: Find nodes with conflicting states
+    - ggr: Generate comprehensive graph statistics
+    - fhcn: Find nodes with many connections
+    - gnh: Get complete history of a node's updates
+
+    💾 Persistence Operations:
+    - save: Save current graph state to JSON file
+    - load: Load graph state from JSON file
+    - tsl: Test graph persistence functionality
+
+    🔄 Session Management:
+    - mnae: Mark a node as explored in current session
+    - nmup: Find nodes that need updates based on session history
+    - sqn: Generate follow-up questions for a node
+    - gsu: Get all updates made in a specific session
+    - scot: Show how nodes evolved across sessions
+    - inw: Increase exploration weight of a node
+    - mnar: Mark a node as rejected in current session
+    """
     graph = from_json_store()
     session_info = {"session_id": 0, "description": "Graph construction"}
     match mode:
@@ -1064,8 +1147,7 @@ def main(
             else:
                 history = get_node_history(graph, node_id)
                 print(f"History for node '{node_id}':")
-                print(history)
-            print(graph)
+                print_json(history)
         
         case ProgramMode.SAVE_GRAPH:
             to_json_store(graph, filepath)
