@@ -11,6 +11,8 @@ from typing import List, Dict, Any, Tuple
 from copy import deepcopy
 import time
 from enum import Enum
+import json
+from networkx.readwrite import json_graph
 
 app = typer.Typer()
 
@@ -632,7 +634,6 @@ def nodes_missing_updates(graph, threshold_sessions: int = 1) -> List[str]:
 
     return missing
 
-
 def find_underexplored_nodes(graph, min_weight_threshold=0.3, max_connectivity=2):
     """
     Identify nodes that are underexplored based on weight and connectivity.
@@ -834,6 +835,80 @@ def get_node_history(graph, node_id):
     }
     return history
 
+def to_json_store(graph: nx.Graph, filepath='store.json') -> None:
+    """
+    Serialize the entire graph to a JSON file.
+
+    Args:
+        graph (nx.Graph): The graph to serialize.
+        filepath (str): The file path where to save the JSON data.
+    """
+    # Convert the graph to node-link data format suitable for JSON serialization
+    data = json_graph.node_link_data(graph)
+
+    # Handle datetime objects in the data (convert them to ISO format strings)
+    def datetime_converter(o):
+        if isinstance(o, datetime):
+            return o.isoformat()
+        raise TypeError(f"Type {type(o)} not serializable")
+
+    # Write the data to a JSON file
+    with open(filepath, 'w') as f:
+        json.dump(data, f, indent=4, default=datetime_converter)
+
+def from_json_store(filepath='store.json') -> nx.Graph:
+    """
+    Deserialize a graph from a JSON file.
+
+    Args:
+        filepath (str): The file path from where to load the JSON data.
+
+    Returns:
+        nx.Graph: The reconstructed graph.
+    """
+    # Read the data from the JSON file
+    with open(filepath, 'r') as f:
+        data = json.load(f)
+
+    # Reconstruct the graph from node-link data
+    graph = json_graph.node_link_graph(data)
+
+    # Convert timestamp strings back to datetime objects in node and edge data
+    for _, node_data in graph.nodes(data=True):
+        if 'timestamps' in node_data:
+            node_data['timestamps'] = [
+                TimeStamp(
+                    timestamp=datetime.fromisoformat(ts['timestamp']),
+                    session_info=ts['session_info']
+                )
+                if isinstance(ts['timestamp'], str) else ts
+                for ts in node_data['timestamps']
+            ]
+
+    for _, _, edge_data in graph.edges(data=True):
+        if 'timestamps' in edge_data:
+            edge_data['timestamps'] = [
+                TimeStamp(
+                    timestamp=datetime.fromisoformat(ts['timestamp']),
+                    session_info=ts['session_info']
+                )
+                if isinstance(ts['timestamp'], str) else ts
+                for ts in edge_data['timestamps']
+            ]
+
+    return graph
+
+def test_save_load():
+    print("Testing save/load")
+    graph = build_graph()
+    to_json_store(graph, filepath='store.json')
+    restored_graph = from_json_store(filepath='store.json')
+
+    inspect(graph)
+    inspect(restored_graph)
+
+    assert nx.is_isomorphic(graph, restored_graph)
+
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -846,6 +921,8 @@ class ProgramMode(str, Enum):
     INSPECT = "ins"
     MARK_NODE_AS_EXPLORED = "mnae"
     NODES_MISSING_UPDATES = "nmup"
+    SAVE_GRAPH = "save"
+    LOAD_GRAPH = "load"
     FULL_GRAPH = "graph"  # default mode when none specified
     FIND_UNDEREXPLORED_NODES = "fun"
     SUGGEST_QUESTIONS_FOR_NODE = "sqn"
@@ -857,6 +934,7 @@ class ProgramMode(str, Enum):
     GENERATE_GRAPH_REPORT = "ggr"
     FIND_HIGHLY_CONNECTED_NODES = "fhcn"
     GET_NODE_HISTORY = "gnh"
+    TEST_SAVE_LOAD = "tsl"
 
 def main(
     mode: Annotated[
@@ -902,6 +980,13 @@ def main(
             show_default=True,
         )
     ] = "",
+    filepath: Annotated[
+        str,
+        typer.Option(
+            help="File path for saving/loading the graph",
+            show_default=True,
+        )
+    ] = "store.json",
 ):
     graph = build_graph()
     session_info = {"session_id": 0, "description": "Graph construction"}
@@ -991,8 +1076,18 @@ def main(
                 print(history)
             print(graph)
         
-        
+        case ProgramMode.SAVE_GRAPH:
+            to_json_store(graph, filepath)
+            print(f"Graph saved to {filepath}")
+
+        case ProgramMode.LOAD_GRAPH:
+            graph = from_json_store(filepath)
+            print(f"Graph loaded from {filepath}")
+            # Optionally, visualize or inspect the loaded graph
+            # visualize_graph(graph)
+
+        case ProgramMode.TEST_SAVE_LOAD:
+            test_save_load()
 
 if __name__ == "__main__":
     typer.run(main)
-
