@@ -726,6 +726,7 @@ def summarize_changes_over_time(graph):
         summary += f"- Node '{node_id}' was updated in sessions: {sorted(set(sessions))}\n"
     
     return summary
+
 def increase_node_weight(graph, node_id, increment=0.1, max_weight=1.0):
     """
     Increase the weight of a node, capping at max_weight.
@@ -740,6 +741,23 @@ def increase_node_weight(graph, node_id, increment=0.1, max_weight=1.0):
     current_weight = node_data.get("weight", 0.3)
     new_weight = min(current_weight + increment, max_weight)
     node_data["weight"] = new_weight
+
+def mark_node_as_rejected(graph, node_id, session_info):
+    """
+    Mark a node as rejected in a particular session.
+
+    Args:
+        graph (nx.DiGraph): The graph containing the node.
+        node_id (str): The node to mark.
+        session_info (Dict[str, Any]): Session metadata.
+    """
+    timestamp = TimeStamp(session_info=session_info)
+    node_data = graph.nodes[node_id]
+    
+    if "rejection_history" not in node_data:
+        node_data["rejection_history"] = []
+    node_data["rejection_history"].append(timestamp.model_dump())
+    node_data["rejected"] = True
 class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
@@ -758,6 +776,7 @@ class ProgramMode(str, Enum):
     GET_SESSION_UPDATES = "gsu"
     SUMMARIZE_CHANGES_OVER_TIME = "scot"
     INCREASE_NODE_WEIGHT = "inw"
+    MARK_NODE_AS_REJECTED = "mnar"
 
 def main(
     mode: Annotated[
