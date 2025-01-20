@@ -19,12 +19,37 @@ class TimeStamp(BaseModel):
     timestamp: datetime = datetime.now(ZoneInfo("UTC"))
     session_info: Dict[str, Any]
 
+class NodeType(str, Enum):
+    ROOT = "root"
+    LAYER_2 = "layer-2"
+    LAYER_3 = "layer-3"
+    LAYER_4 = "layer-4"
+
+
 class Node(BaseModel):
     node_id: str
-    type: str
+    type: NodeType
     content: str
     weight: float = 0.5  # Default weight
     timestamps: List[TimeStamp]
+
+class EdgeType(str, Enum):
+    HAS = "has"
+    CONTAINS = "contains"
+    CONNECTED_TO = "connected_to"
+    HAS_EDGE_TYPE = "has_edge_type"
+    REINFORCES = "reinforces"
+    PREVENTS = "prevents"
+    PRECEDES = "precedes"
+    FOLLOWS = "follows"
+    IS_A = "is_a"
+    IS_NOT_A = "is_not_a"
+    IS_LIKE = "is_like"
+    IS_NOT_LIKE = "is_not_like"
+    IS_RELATED_TO = "is_related_to"
+    IS_NOT_RELATED_TO = "is_not_related_to"
+    IS_CAUSED_BY = "is_caused_by"
+    IS_NOT_CAUSED_BY = "is_not_caused_by"
 
 class Edge(BaseModel):
     source_id: str
@@ -33,15 +58,13 @@ class Edge(BaseModel):
     weight: float = 0.5
     timestamps: List[TimeStamp]
 
-
-
 def create_graph():
     """
     Create and return an empty directed graph.
     """
     return nx.DiGraph()
 
-def add_node(graph, node_id, content, node_type, session_info, parent_node=None):
+def add_node(graph, node_id, content, node_type, session_info, parent_node=None, edge_type=EdgeType.CONNECTED_TO):
     """
     Add a node to the graph using Pydantic models.
     """
@@ -69,7 +92,7 @@ def add_node(graph, node_id, content, node_type, session_info, parent_node=None)
         edge = Edge(
             source_id=parent_node,
             target_id=node_id,
-            type="has",
+            type=edge_type,
             timestamps=[timestamp]
         )
         
@@ -535,7 +558,12 @@ class ProgramMode(str, Enum):
     VISUALIZE = "vis"
     DEPTH_FIRST = "dfs"
     BREADTH_FIRST = "bfs"
-    INSPECT = "inspect"
+    FIND_NEIGHBORS = "fnn"
+    TRAVERSE_BY_EDGE_TYPE = "tbe"
+    EXTRACT_SUBGRAPH = "esg"
+    FIND_SHORTEST_PATH = "fsp"
+    CUSTOM_WALK = "cwm"
+    INSPECT = "ins"
     FULL_GRAPH = "graph"  # default mode when none specified
 
 def main(
@@ -554,6 +582,20 @@ def main(
             show_default=True,
         )
     ] = "formulation",
+    end_node: Annotated[
+        str,
+        typer.Option(
+            help="End node for traversal operations",
+            show_default=True,
+        )
+    ] = "formulation",
+    edge_type: Annotated[
+        str,
+        typer.Option(
+            help="Edge type for traversal operations",
+            show_default=True,
+        )
+    ] = "has",
 ):
     graph = build_complex_graph()
     match mode:
@@ -563,6 +605,14 @@ def main(
             print(depth_first_walk(graph, start_node))
         case ProgramMode.BREADTH_FIRST:
             print(breadth_first_walk(graph, start_node))
+        case ProgramMode.FIND_NEIGHBORS:
+            print(find_neighbors(graph, start_node))
+        case ProgramMode.TRAVERSE_BY_EDGE_TYPE:
+            print(traverse_by_edge_type(graph, start_node, edge_type))
+        case ProgramMode.EXTRACT_SUBGRAPH:
+            print(extract_subgraph(graph, start_node))
+        case ProgramMode.FIND_SHORTEST_PATH:
+            print(find_shortest_path(graph, start_node, end_node))
         case ProgramMode.INSPECT:
             for node in graph.nodes:
                 inspect(graph.nodes[node])
