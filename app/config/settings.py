@@ -14,7 +14,7 @@ Main settings for the application using Pydantic Settings.
 class Settings(BaseSettings):
     """Main settings for the application."""
 
-    app_name: str = "GenAI Project Template"
+    app_name: str = "Meet Ben"
     llm: LLMConfig = LLMConfig()
     database: DatabaseConfig = DatabaseConfig()
 

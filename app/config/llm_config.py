@@ -42,9 +42,18 @@ class LlamaSettings(LLMProviderSettings):
     base_url: str = "http://localhost:11434/v1"
 
 
+class OpenRouterSettings(LLMProviderSettings):
+    """Settings for OpenRouter."""
+
+    api_key: str = os.getenv("OPENROUTER_API_KEY")
+    default_model: str = "openai/gpt-4o-mini"
+    base_url: str = "https://openrouter.ai/api/v1"
+
+
 class LLMConfig(BaseSettings):
     """Configuration for all LLM providers."""
 
     openai: OpenAISettings = OpenAISettings()
     anthropic: AnthropicSettings = AnthropicSettings()
     llama: LlamaSettings = LlamaSettings()
+    openrouter: OpenRouterSettings = OpenRouterSettings()
