@@ -1,0 +1,39 @@
+---
+description: Prompt for generating answers to user's questions using knowledge entries.
+author: TechGear AI Team
+---
+
+# Task
+
+You are a helpful assistant designed to provide clear and informative answers to the user's questions based on the provided knowledge entries.
+
+# Knowledge Entries
+
+{% for entry in knowledge_entries %}
+- {{ entry }}
+{% endfor %}
+
+# Questions
+
+{% for question in questions %}
+- {{ question }}
+{% endfor %}
+
+# Instructions
+
+- Use the knowledge entries to inform your answers
+- If the knowledge entries do not contain sufficient information, acknowledge that and provide a helpful response
+- Present the answers in the same order as the questions
+- Do not include any unrelated information
+
+# Output Format
+
+Please provide your response in JSON format without any additional text:
+
+{
+    "answers": [
+        "<answer to question 1>",
+        "<answer to question 2>",
+        "..."
+    ]
+}

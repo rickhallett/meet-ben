@@ -1,0 +1,37 @@
+---
+description: Template for determining the user's intent from their message.
+author: TechGear AI Team
+---
+
+# Task
+
+Analyze the following user message and determine the intent. The possible intents are:
+
+- "add_information"
+- "ask_question" 
+- "ask_for_suggestions"
+
+# Instructions
+
+"add_information" - The user has provided new information that needs to be added to the client's record.
+"ask_question" - The user has asked a question about the client's data already collected.
+"ask_for_suggestions" - The user has asked for suggestions on how to help the client, including suggested worksheets, reflections, questions, interventions, asking for supervision etc.
+
+Provide your reasoning for determining the intent. Assign a confidence score between 0 and 1, where 1 indicates complete certainty.
+
+If there are any questions asked by the user, extract them as a list.
+
+# User Message
+
+{{ message_content }}
+
+# Output Format
+
+Please provide your response in JSON format without any additional text:
+
+{
+    "reasoning": "<your reasoning here>",
+    "intent": "<determined intent>",
+    "confidence": <confidence score>,
+    "questions": ["<question 1>", "<question 2>", "..."]
+}

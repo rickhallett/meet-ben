@@ -1,0 +1,33 @@
+---
+description: Template for extracting knowledge entries from the user's message to update the knowledge store.
+author: TechGear AI Team
+---
+
+# Task
+
+Please analyze the following message from the user and extract key information that can be added to the user's knowledge store. Focus on observations, thoughts, feelings, and any relevant details that contribute to building the user's clinical formulation profile.
+
+# User Message
+
+{{ message_content }}
+
+# Instructions
+
+- Identify and extract individual pieces of knowledge from the message.
+- Present them as a list of strings.
+- Ensure that each entry is concise and captures a single piece of information.
+- Do not include any personal identifiers or sensitive information.
+- Do not include any additional commentary or explanation.
+
+# Output Format
+
+Please provide your response in JSON format without any additional text:
+
+{
+    "knowledge_entries": [
+        "<entry 1>",
+        "<entry 2>",
+        "...",
+        "<entry n>"
+    ]
+}

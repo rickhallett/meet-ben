@@ -1,0 +1,41 @@
+You are analyzing a conversation to identify potential knowledge gaps. Review the following:
+
+Current message: {{ message }}
+
+Relevant context from knowledge base:
+{% for item in relevant_context %}
+- {{ item }}
+{% endfor %}
+
+Recent conversation history:
+{% for msg in conversation_history %}
+{{ msg.role }}: {{ msg.content }}
+{% endfor %}
+
+Please identify:
+1. Any missing information needed to fully understand the user's query
+2. Ambiguous terms or concepts that need clarification
+3. Assumptions that should be verified
+4. Related topics that might be relevant but aren't mentioned
+
+For each identified gap, provide:
+- Description of the gap
+- Confidence score (0-100) indicating how certain you are this information is missing
+- Suggested clarifying questions or prompts
+
+Format your response as JSON:
+{
+  "identified_gaps": [
+    {
+      "type": "missing_info|ambiguity|assumption|related_topic",
+      "description": "Description of the gap",
+      "confidence": 85,
+      "clarifying_questions": ["Question 1", "Question 2"]
+    }
+  ],
+  "confidence_scores": {
+    "overall_understanding": 75,
+    "context_relevance": 80,
+    "gap_assessment": 90
+  }
+}
