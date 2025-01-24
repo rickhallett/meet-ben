@@ -1,0 +1,62 @@
+[
+  {
+    "query": "What strategies can I use to help my client better understand the role of experiential avoidance in their difficulties with relationships?",
+    "user_id": "1",
+    "request_id": "100",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "How do I determine whether my client’s overly critical self-talk is primarily a result of cognitive fusion or a different process?",
+    "user_id": "1",
+    "request_id": "test-request-101",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What are some effective ways to assess present moment awareness in clients who report 'going on autopilot' during stressful situations?",
+    "user_id": "1",
+    "request_id": "test-request-102",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "How can I explore self-as-context issues with a client who describes their actions as though they are watching themselves from a distance?",
+    "user_id": "1",
+    "request_id": "test-request-103",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What approaches might help clarify values for a client who repeatedly postpones important lifestyle changes due to not feeling ready?",
+    "user_id": "1",
+    "request_id": "test-request-104",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "How do I help my client shift from avoidance strategies to more workable behaviors when they feel overwhelmed by career-related anxieties?",
+    "user_id": "1",
+    "request_id": "test-request-105",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What methods can I use to address psychological flexibility barriers when my client frequently expresses intense self-criticism?",
+    "user_id": "1",
+    "request_id": "test-request-106",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "How can I effectively explore the impact of conditional acceptance in childhood on a client’s current struggles with living a values-based life?",
+    "user_id": "1",
+    "request_id": "test-request-107",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What are the best ways to introduce the concept of self-as-context to a client who feels disconnected from their actions and sense of self?",
+    "user_id": "1",
+    "request_id": "test-request-108",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What interventions can help a client overcome cognitive fusion when they describe decision-making as paralyzed by a fear of failure?",
+    "user_id": "1",
+    "request_id": "test-request-109",
+    "session_id": "test-session-1"
+  }
+]

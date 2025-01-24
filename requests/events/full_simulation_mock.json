@@ -1,0 +1,602 @@
+[
+  {
+    "query": "I’ve gathered more details on the client’s personal background: she’s 34, identifies as female, and has been dealing with anxiety for several years.",
+    "user_id": "2",
+    "request_id": "test-request-1000",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client shared that her parents divorced when she was young, and it left her feeling abandoned. How might this affect her current behaviors?",
+    "user_id": "2",
+    "request_id": "test-request-1001",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you help explain how her stated goals align—or don't—with her current struggles in therapy?",
+    "user_id": "2",
+    "request_id": "test-request-1002",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "What are good strategies to address her habit of avoiding stressful situations? She tends to withdraw from social events.",
+    "user_id": "2",
+    "request_id": "test-request-1003",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client has mentioned that she really values her family relationships but struggles to stay in touch due to anxiety. How can we work on this?",
+    "user_id": "2",
+    "request_id": "test-request-1004",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "How does avoiding difficult conversations with her family relate to her unworkable patterns of behavior?",
+    "user_id": "2",
+    "request_id": "test-request-1005",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "I’ve learned that the client is quite resourceful when calm—she’s a skilled planner. How could we leverage this strength?",
+    "user_id": "2",
+    "request_id": "test-request-1006",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Her thinking patterns lean toward catastrophizing, e.g., one small mistake spirals into a fear of total failure. Could this be a focus area?",
+    "user_id": "2",
+    "request_id": "test-request-1007",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you offer tips on teaching assertiveness skills? She struggles to say no and takes on tasks she doesn’t want.",
+    "user_id": "2",
+    "request_id": "test-request-1008",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "How does her avoidance of social gatherings feed into her overall values misalignment?",
+    "user_id": "2",
+    "request_id": "test-request-1009",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She avoids painting—a hobby she loves—because she feels she isn’t good enough anymore. What can we do about this?",
+    "user_id": "2",
+    "request_id": "test-request-1010",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "I’ve discovered she responds well to metaphorical exercises, particularly those involving journeys or paths. Could this be a therapeutic tool?",
+    "user_id": "2",
+    "request_id": "test-request-1011",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Can you explain how her experiences of being bullied as a teenager might tie into her current self-esteem issues?",
+    "user_id": "2",
+    "request_id": "test-request-1012",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She mentioned struggling with acceptance from her family because she identifies as bisexual. How might we address this?",
+    "user_id": "2",
+    "request_id": "test-request-1013",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "What’s the best way to tackle her tendency to fixate on negative outcomes? She struggles to imagine positive results.",
+    "user_id": "2",
+    "request_id": "test-request-1014",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client has financial concerns that she says make it hard to focus on therapy goals. How can we account for this barrier?",
+    "user_id": "2",
+    "request_id": "test-request-1015",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She frequently says yes to things she doesn’t want to do. Can we teach her to set boundaries without feeling guilty?",
+    "user_id": "2",
+    "request_id": "test-request-1016",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could we explore how her avoidance habits—like staying home to avoid judgment—are keeping her stuck?",
+    "user_id": "2",
+    "request_id": "test-request-1017",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She confided that being bullied in school still affects how she sees herself today. How can we work through this?",
+    "user_id": "2",
+    "request_id": "test-request-1018",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She has a close friend who encourages her to try new things but doesn’t always take their advice. How can we build on this support?",
+    "user_id": "2",
+    "request_id": "test-request-1019",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you suggest ways to align her creative values (she loves art) with small, manageable goals?",
+    "user_id": "2",
+    "request_id": "test-request-1020",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She brought up how finances limit her ability to access self-care resources. What might help alleviate this stress?",
+    "user_id": "2",
+    "request_id": "test-request-1021",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Her creative identity feels distant. She says she ‘used to be an artist.’ Could we reignite this value?",
+    "user_id": "2",
+    "request_id": "test-request-1022",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Her unworkable habits—like procrastinating on important goals—seem tied to fear of failure. Can you clarify?",
+    "user_id": "2",
+    "request_id": "test-request-1023",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s identified creativity as something deeply important to her, but she avoids creative activities out of self-doubt. How should we address this?",
+    "user_id": "2",
+    "request_id": "test-request-1024",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "I’ve got more info: the client says she feels her life lacks purpose without reconnecting with her creative hobbies. Could this be a primary focus?",
+    "user_id": "2",
+    "request_id": "test-request-1025",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She avoids feelings of sadness by overworking herself, especially during high-stress periods. How might we approach this pattern?",
+    "user_id": "2",
+    "request_id": "test-request-1026",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Can you clarify how her childhood experiences of abandonment might influence her current coping mechanisms?",
+    "user_id": "2",
+    "request_id": "test-request-1027",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She says she feels stuck in a cycle of procrastination whenever she’s faced with personal challenges. What’s a good first step?",
+    "user_id": "2",
+    "request_id": "test-request-1028",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client often describes herself as ‘not enough.’ Could this self-judgment be a barrier to her progress?",
+    "user_id": "2",
+    "request_id": "test-request-1029",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s mentioned that her spirituality was once a source of comfort but feels disconnected from it now. Should we explore this area?",
+    "user_id": "2",
+    "request_id": "test-request-1030",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "What are some effective techniques for helping clients recognize when they’re engaging in avoidance behaviors?",
+    "user_id": "2",
+    "request_id": "test-request-1031",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client has difficulty maintaining focus at work because she overanalyzes small mistakes. How can we address this fusion pattern?",
+    "user_id": "2",
+    "request_id": "test-request-1032",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She reported avoiding her sibling due to unresolved conflicts but also values family relationships. What’s a good starting point here?",
+    "user_id": "2",
+    "request_id": "test-request-1033",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you explain how financial stressors might interact with her unworkable actions, like procrastinating on bills?",
+    "user_id": "2",
+    "request_id": "test-request-1034",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "I’ve learned that the client struggles with perfectionism, which prevents her from taking small steps toward her goals. Can this be reframed?",
+    "user_id": "2",
+    "request_id": "test-request-1035",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She views herself as someone who 'always messes things up.' Could this self-description limit her ability to engage in therapy?",
+    "user_id": "2",
+    "request_id": "test-request-1036",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She has difficulty shifting her attention from negative past experiences. Could mindfulness practices be a helpful tool?",
+    "user_id": "2",
+    "request_id": "test-request-1037",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client procrastinates on health goals, saying she’ll ‘start when life is less chaotic.’ How can we address this reasoning?",
+    "user_id": "2",
+    "request_id": "test-request-1038",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s interested in journaling but isn’t sure what to write about. Could you suggest prompts that align with her therapy goals?",
+    "user_id": "2",
+    "request_id": "test-request-1039",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Her tendency to idealize how things used to be makes it hard for her to move forward. How do we help shift her perspective?",
+    "user_id": "2",
+    "request_id": "test-request-1040",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s shared that she avoids visiting places that remind her of past failures. How might exposure techniques help in this case?",
+    "user_id": "2",
+    "request_id": "test-request-1041",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client recently said, ‘Why even try when nothing works out?’ How do we address these kinds of hopeless statements?",
+    "user_id": "2",
+    "request_id": "test-request-1042",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you clarify how we might connect her stated value of health with actions she can take now to reduce her anxiety?",
+    "user_id": "2",
+    "request_id": "test-request-1043",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She says she feels safer staying within her comfort zone but admits this is limiting her growth. What tools could challenge this belief?",
+    "user_id": "2",
+    "request_id": "test-request-1044",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client struggles with time management and gets overwhelmed by tasks. Could breaking them into smaller steps help?",
+    "user_id": "2",
+    "request_id": "test-request-1045",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She wants to improve her friendships but doesn’t feel confident initiating plans. How can we build this skill?",
+    "user_id": "2",
+    "request_id": "test-request-1046",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She frequently reflects on how life would be better ‘if only’ she had made different choices. How can we help reframe these thoughts?",
+    "user_id": "2",
+    "request_id": "test-request-1047",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client feels disconnected from her body and avoids exercise because it triggers feelings of inadequacy. What’s a starting point here?",
+    "user_id": "2",
+    "request_id": "test-request-1048",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She describes herself as ‘someone who can’t handle stress.’ How can we challenge and reframe this belief?",
+    "user_id": "2",
+    "request_id": "test-request-1049",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "I’ve got more info: the client says she feels her life lacks purpose without reconnecting with her creative hobbies. Could this be a primary focus?",
+    "user_id": "2",
+    "request_id": "test-request-1025",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She avoids feelings of sadness by overworking herself, especially during high-stress periods. How might we approach this pattern?",
+    "user_id": "2",
+    "request_id": "test-request-1026",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Can you clarify how her childhood experiences of abandonment might influence her current coping mechanisms?",
+    "user_id": "2",
+    "request_id": "test-request-1027",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She says she feels stuck in a cycle of procrastination whenever she’s faced with personal challenges. What’s a good first step?",
+    "user_id": "2",
+    "request_id": "test-request-1028",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client often describes herself as ‘not enough.’ Could this self-judgment be a barrier to her progress?",
+    "user_id": "2",
+    "request_id": "test-request-1029",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s mentioned that her spirituality was once a source of comfort but feels disconnected from it now. Should we explore this area?",
+    "user_id": "2",
+    "request_id": "test-request-1030",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "What are some effective techniques for helping clients recognize when they’re engaging in avoidance behaviors?",
+    "user_id": "2",
+    "request_id": "test-request-1031",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client has difficulty maintaining focus at work because she overanalyzes small mistakes. How can we address this fusion pattern?",
+    "user_id": "2",
+    "request_id": "test-request-1032",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She reported avoiding her sibling due to unresolved conflicts but also values family relationships. What’s a good starting point here?",
+    "user_id": "2",
+    "request_id": "test-request-1033",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you explain how financial stressors might interact with her unworkable actions, like procrastinating on bills?",
+    "user_id": "2",
+    "request_id": "test-request-1034",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "I’ve learned that the client struggles with perfectionism, which prevents her from taking small steps toward her goals. Can this be reframed?",
+    "user_id": "2",
+    "request_id": "test-request-1035",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She views herself as someone who 'always messes things up.' Could this self-description limit her ability to engage in therapy?",
+    "user_id": "2",
+    "request_id": "test-request-1036",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She has difficulty shifting her attention from negative past experiences. Could mindfulness practices be a helpful tool?",
+    "user_id": "2",
+    "request_id": "test-request-1037",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client procrastinates on health goals, saying she’ll ‘start when life is less chaotic.’ How can we address this reasoning?",
+    "user_id": "2",
+    "request_id": "test-request-1038",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s interested in journaling but isn’t sure what to write about. Could you suggest prompts that align with her therapy goals?",
+    "user_id": "2",
+    "request_id": "test-request-1039",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Her tendency to idealize how things used to be makes it hard for her to move forward. How do we help shift her perspective?",
+    "user_id": "2",
+    "request_id": "test-request-1040",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s shared that she avoids visiting places that remind her of past failures. How might exposure techniques help in this case?",
+    "user_id": "2",
+    "request_id": "test-request-1041",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client recently said, ‘Why even try when nothing works out?’ How do we address these kinds of hopeless statements?",
+    "user_id": "2",
+    "request_id": "test-request-1042",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you clarify how we might connect her stated value of health with actions she can take now to reduce her anxiety?",
+    "user_id": "2",
+    "request_id": "test-request-1043",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She says she feels safer staying within her comfort zone but admits this is limiting her growth. What tools could challenge this belief?",
+    "user_id": "2",
+    "request_id": "test-request-1044",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client struggles with time management and gets overwhelmed by tasks. Could breaking them into smaller steps help?",
+    "user_id": "2",
+    "request_id": "test-request-1045",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She wants to improve her friendships but doesn’t feel confident initiating plans. How can we build this skill?",
+    "user_id": "2",
+    "request_id": "test-request-1046",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She frequently reflects on how life would be better ‘if only’ she had made different choices. How can we help reframe these thoughts?",
+    "user_id": "2",
+    "request_id": "test-request-1047",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client feels disconnected from her body and avoids exercise because it triggers feelings of inadequacy. What’s a starting point here?",
+    "user_id": "2",
+    "request_id": "test-request-1048",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She describes herself as ‘someone who can’t handle stress.’ How can we challenge and reframe this belief?",
+    "user_id": "2",
+    "request_id": "test-request-1049",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She said she’s always been ‘the one who fixes problems’ in her family, but it’s exhausting. How can we address this role?",
+    "user_id": "2",
+    "request_id": "test-request-1050",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client avoids making decisions because she’s worried about getting it wrong. Could decision-making exercises help?",
+    "user_id": "2",
+    "request_id": "test-request-1051",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She said her anxiety feels worse in group settings, especially when she has to speak. Could this be addressed with exposure?",
+    "user_id": "2",
+    "request_id": "test-request-1052",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client avoids addressing conflicts at work, even when it affects her. How might we help her assert herself in these situations?",
+    "user_id": "2",
+    "request_id": "test-request-1053",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s shared that she overthinks everything before taking action, fearing she’ll fail. What’s a good way to interrupt this pattern?",
+    "user_id": "2",
+    "request_id": "test-request-1054",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client feels judged by her family for her career choices, which discourages her from opening up. How can we address this dynamic?",
+    "user_id": "2",
+    "request_id": "test-request-1055",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you clarify how her procrastination on self-care ties into her belief that ‘it’s not worth it’ unless it’s perfect?",
+    "user_id": "2",
+    "request_id": "test-request-1056",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client wants to reconnect with her spirituality but feels awkward bringing it up in sessions. How might we explore this topic?",
+    "user_id": "2",
+    "request_id": "test-request-1057",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She frequently worries about being ‘too much’ for others to handle, which leads her to isolate. What’s a good approach here?",
+    "user_id": "2",
+    "request_id": "test-request-1058",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client avoids physical sensations of anxiety by staying in bed longer than she’d like. Could exposure to these feelings help?",
+    "user_id": "2",
+    "request_id": "test-request-1059",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She has trouble identifying her own needs and says she ‘doesn’t know how to ask for help.’ How do we build this skill?",
+    "user_id": "2",
+    "request_id": "test-request-1060",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s reluctant to try new hobbies because she believes she’ll fail at them. Could this be a cognitive fusion issue?",
+    "user_id": "2",
+    "request_id": "test-request-1061",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client has expressed a desire to improve her diet but avoids starting because she’s ‘already messed up too much.’ How do we address this?",
+    "user_id": "2",
+    "request_id": "test-request-1062",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Could you clarify the relationship between her fear of conflict and her tendency to avoid expressing emotions?",
+    "user_id": "2",
+    "request_id": "test-request-1063",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She wants to feel more confident socially but often predicts the worst-case scenario. What interventions might help?",
+    "user_id": "2",
+    "request_id": "test-request-1064",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client has trouble balancing work and personal life because she feels like she’s always ‘on call.’ How do we address this?",
+    "user_id": "2",
+    "request_id": "test-request-1065",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She’s shared that her inner critic is very loud and constant. Could self-compassion exercises be helpful here?",
+    "user_id": "2",
+    "request_id": "test-request-1066",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client avoids discussing her anxiety with friends, fearing they won’t understand. How can we encourage her to open up?",
+    "user_id": "2",
+    "request_id": "test-request-1067",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She has a habit of saying, ‘I’ll deal with it later,’ which keeps her stuck in avoidance. What’s a good way to challenge this?",
+    "user_id": "2",
+    "request_id": "test-request-1068",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client avoids eye contact in conversations because she says it makes her feel judged. How do we address this discomfort?",
+    "user_id": "2",
+    "request_id": "test-request-1069",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She feels like she ‘has to please everyone’ to be loved. Could this belief be tied to her anxiety? How can we work on this?",
+    "user_id": "2",
+    "request_id": "test-request-1070",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "Her tendency to ruminate over past mistakes keeps her awake at night. How might mindfulness or relaxation techniques help?",
+    "user_id": "2",
+    "request_id": "test-request-1071",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She avoids taking risks at work because she fears criticism from her boss. What’s a good way to encourage her to take small steps?",
+    "user_id": "2",
+    "request_id": "test-request-1072",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "The client said, ‘I just can’t change—I’ve always been this way.’ How do we challenge this fixed mindset?",
+    "user_id": "2",
+    "request_id": "test-request-1073",
+    "session_id": "test-session-2"
+  },
+  {
+    "query": "She wants to explore her values more but isn’t sure where to start. Could values clarification exercises help?",
+    "user_id": "2",
+    "request_id": "test-request-1074",
+    "session_id": "test-session-2"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "query": "Can you clarify how to distinguish between experiential avoidance and cognitive fusion in a client's behavior?",
+    "user_id": "1",
+    "request_id": "test-request-400",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Could you explain the nuances of addressing self-criticism within the ACT framework, particularly regarding cognitive fusion?",
+    "user_id": "1",
+    "request_id": "test-request-401",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "I’m not entirely sure how to measure present moment awareness in a way that is both meaningful and practical. Could you clarify?",
+    "user_id": "1",
+    "request_id": "test-request-402",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Could you help clarify how self-as-context can manifest in a client’s narrative, particularly if they feel disconnected from their sense of self?",
+    "user_id": "1",
+    "request_id": "test-request-403",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Can you clarify the process of distinguishing unworkable behaviors from workable ones, especially in cases involving avoidance strategies?",
+    "user_id": "1",
+    "request_id": "test-request-404",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Could you explain how values clarification differs from setting goals in the ACT framework? I’m unsure how to distinguish them in practice.",
+    "user_id": "1",
+    "request_id": "test-request-405",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "I need clarification on how to explore psychological flexibility without overwhelming the client with theoretical terms. What’s the best approach?",
+    "user_id": "1",
+    "request_id": "test-request-406",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Can you help me understand how conditional acceptance in childhood might specifically shape avoidance patterns in adulthood?",
+    "user_id": "1",
+    "request_id": "test-request-407",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "I’m unclear about how to present the concept of self-as-context to a client without overcomplicating it. Could you clarify?",
+    "user_id": "1",
+    "request_id": "test-request-408",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Could you clarify how to encourage a client stuck in decision paralysis due to fear of failure to take meaningful action?",
+    "user_id": "1",
+    "request_id": "test-request-409",
+    "session_id": "test-session-1"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "query": "Based on my client's reported struggles with relationships, they seem to frequently avoid emotionally charged conversations and situations. I suspect this may be a form of experiential avoidance. How should I proceed?",
+    "user_id": "1",
+    "request_id": "test-request-1",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "My client described a recurring sense of failure whenever they attempt to pursue long-term goals, which they attribute to overly critical self-talk. Could this indicate cognitive fusion or something else?",
+    "user_id": "1",
+    "request_id": "test-request-2",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "In reviewing past sessions, I noticed my client often discusses their actions as 'automatic,' especially under stress. Could this pattern reflect a lack of present moment awareness, and how might I address it?",
+    "user_id": "3",
+    "request_id": "test-request-3",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "My client recently shared that they feel like they are 'watching themselves fail' during social interactions. Could this provide insight into self-as-context issues, and what would be the best way to explore this further?",
+    "user_id": "4",
+    "request_id": "test-request-4",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "In their personal reflections, my client expressed a desire to improve their physical health but admitted they consistently put off changes due to 'not feeling ready.' Could this be tied to a lack of values clarification?",
+    "user_id": "5",
+    "request_id": "test-request-5",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "After reviewing session notes, I see a consistent theme of my client relying on avoidance strategies when discussing their career anxieties. How can I help them develop more workable behaviors in this context?",
+    "user_id": "1",
+    "request_id": "test-request-6",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "My client’s journaling reveals frequent self-criticism and judgment, especially when they make mistakes. Could this indicate barriers to psychological flexibility, and how should I address these?",
+    "user_id": "2",
+    "request_id": "test-request-7",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "During discussions about their childhood, my client highlighted several instances of conditional acceptance. Could this have influenced their current struggles with values-based living?",
+    "user_id": "3",
+    "request_id": "test-request-8",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "My client reported feeling a deep disconnect between their actions and their sense of self. Could this indicate a need to work on self-as-context, and how might I frame this in our sessions?",
+    "user_id": "4",
+    "request_id": "test-request-9",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Reflecting on a recent session, my client described their decision-making process as 'paralyzed by fear of failure.' Could this indicate cognitive fusion, and how can I guide them toward greater flexibility?",
+    "user_id": "5",
+    "request_id": "test-request-10",
+    "session_id": "test-session-1"
+  }
+]

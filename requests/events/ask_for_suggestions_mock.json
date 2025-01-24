@@ -1,0 +1,62 @@
+[
+  {
+    "query": "What are some practical interventions to help a client recognize and reduce experiential avoidance in their daily life?",
+    "user_id": "1",
+    "request_id": "test-request-500",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Could you suggest ways to address cognitive fusion with clients who are resistant to abstract concepts?",
+    "user_id": "2",
+    "request_id": "test-request-501",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What exercises would you recommend for increasing present moment awareness in clients with high stress levels?",
+    "user_id": "3",
+    "request_id": "test-request-502",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Do you have any suggestions for introducing the concept of self-as-context to clients in a relatable way?",
+    "user_id": "4",
+    "request_id": "test-request-503",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What are some actionable strategies to help clients transition from avoidance to values-based behaviors?",
+    "user_id": "5",
+    "request_id": "test-request-504",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Could you suggest methods for helping clients clarify their values when they express ambivalence or uncertainty?",
+    "user_id": "1",
+    "request_id": "test-request-505",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What suggestions do you have for exploring psychological flexibility with clients who struggle with self-criticism?",
+    "user_id": "2",
+    "request_id": "test-request-506",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Can you recommend techniques for discussing the impact of conditional acceptance in childhood with clients who may have limited insight?",
+    "user_id": "3",
+    "request_id": "test-request-507",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "What are the best practices for helping a client develop a deeper connection to self-as-context in therapy sessions?",
+    "user_id": "4",
+    "request_id": "test-request-508",
+    "session_id": "test-session-1"
+  },
+  {
+    "query": "Do you have suggestions for helping clients overcome fear-based decision paralysis and build confidence in taking committed actions?",
+    "user_id": "5",
+    "request_id": "test-request-509",
+    "session_id": "test-session-1"
+  }
+]
