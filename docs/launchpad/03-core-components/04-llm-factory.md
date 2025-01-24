@@ -139,7 +139,7 @@ class AnalyzeTicket(LLMNode):
         )
 
     def create_completion(self, context: ContextModel) -> ResponseModel:
-        llm = LLMFactory("openai")
+        llm = LLMFactory("openrouter")
         prompt = PromptManager.get_prompt(
             "ticket_analysis",
             pipeline="support",

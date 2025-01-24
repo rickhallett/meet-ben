@@ -45,7 +45,7 @@ class LlamaSettings(LLMProviderSettings):
 class OpenRouterSettings(LLMProviderSettings):
     """Settings for OpenRouter."""
 
-    api_key: str = os.getenv("OPENROUTER_API_KEY")
+    api_key: str = os.getenv("OPEN_ROUTER_API_KEY")
     default_model: str = "openai/gpt-4o-mini"
     base_url: str = "https://openrouter.ai/api/v1"
 

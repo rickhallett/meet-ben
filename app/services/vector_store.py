@@ -8,6 +8,7 @@ from psycopg2.extras import RealDictCursor
 from config.settings import get_settings
 from openai import OpenAI
 from timescale_vector import client
+from utils.timer import timer
 
 """
 Vector Store Management Module
@@ -70,14 +71,15 @@ class VectorStore:
             A list of floats representing the embedding.
         """
         text = text.replace("\n", " ")
-        embedding = (
-            self.openai_client.embeddings.create(
-                input=[text],
-                model=self.embedding_model,
+        with timer("Embedding generation"):
+            embedding = (
+                self.openai_client.embeddings.create(
+                    input=[text],
+                    model=self.embedding_model,
+                )
+                .data[0]
+                .embedding
             )
-            .data[0]
-            .embedding
-        )
         return embedding
 
     def create_tables(self) -> None:
@@ -124,7 +126,10 @@ class VectorStore:
         Args:
             query: The input text to search for.
             limit: The maximum number of results to return.
-            metadata_filter: A dictionary or list of dictionaries for equality-based metadata filtering.
+            metadata_filter: A dictionary or list of dictionaries for filtering by metadata fields:
+                - user_id: Filter by specific therapist
+                - session_id: Filter by specific session
+                - category: Filter by entry category
             predicates: A Predicates object for complex metadata filtering.
                 - Predicates objects are defined by the name of the metadata key, an operator, and a value.
                 - Operators: ==, !=, >, >=, <, <=
@@ -137,22 +142,32 @@ class VectorStore:
             Either a list of tuples or a pandas DataFrame containing the search results.
 
         Basic Examples:
-            Basic search:
-                vector_store.semantic_search("What are your shipping options?")
-            Search with metadata filter:
-                vector_store.semantic_search("Shipping options", metadata_filter={"category": "Shipping"})
+            Basic search for a specific user and session:
+                vector_store.semantic_search(
+                    "Client background",
+                    metadata_filter={"user_id": "therapist123", "session_id": "session456"}
+                )
+            
+            Search with category filter:
+                vector_store.semantic_search(
+                    "Treatment goals",
+                    metadata_filter={
+                        "user_id": "therapist123",
+                        "category": "goals"
+                    }
+                )
         
         Predicates Examples:
-            Search with predicates:
-                vector_store.semantic_search("Pricing", predicates=client.Predicates("price", ">", 100))
-            Search with complex combined predicates:
-                complex_pred = (client.Predicates("category", "==", "Electronics") & client.Predicates("price", "<", 1000)) | \
-                               (client.Predicates("category", "==", "Books") & client.Predicates("rating", ">=", 4.5))
-                vector_store.semantic_search("High-quality products", predicates=complex_pred)
+            Search with date-based predicates:
+                pred = client.Predicates("created_at", ">", "2024-01-01")
+                vector_store.semantic_search("Recent observations", predicates=pred)
         
         Time-based filtering:
-            Search with time range:
-                vector_store.semantic_search("Recent updates", time_range=(datetime(2024, 1, 1), datetime(2024, 1, 31)))
+            Search within a specific time range:
+                vector_store.semantic_search(
+                    "Progress notes",
+                    time_range=(datetime(2024, 1, 1), datetime(2024, 1, 31))
+                )
         """
         query_embedding = self.get_embedding(query)
 
@@ -170,7 +185,8 @@ class VectorStore:
             start_date, end_date = time_range
             search_args["uuid_time_filter"] = client.UUIDTimeRange(start_date, end_date)
 
-        results = self.vec_client.search(query_embedding, **search_args)
+        with timer("Vector search"):
+            results = self.vec_client.search(query_embedding, **search_args)
 
         if return_dataframe:
             return self._create_dataframe_from_results(results)
@@ -276,10 +292,12 @@ class VectorStore:
         LIMIT %s
         """
 
-        with psycopg2.connect(self.settings.database.service_url) as conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute(search_sql, (query, limit))
-                results = cur.fetchall()
+        with timer("Keyword search"):
+            # Create a new connection using psycopg2
+            with psycopg2.connect(self.settings.database.service_url) as conn:
+                with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                    cur.execute(search_sql, (query, limit))
+                    results = cur.fetchall()
 
         if return_dataframe:
             if not results:

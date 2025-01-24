@@ -85,7 +85,7 @@ class AnalyzeNode(LLMNode):
         )
 
     def create_completion(self, context: ContextModel) -> ResponseModel:
-        llm = LLMFactory("openai")
+        llm = LLMFactory("openrouter")
         prompt = PromptManager.get_prompt(
             "extract",
             pipeline="support",

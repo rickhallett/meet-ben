@@ -31,6 +31,28 @@ class LLMProvider(ABC):
         """Create a completion using the LLM provider."""
         pass
 
+class OpenRouterProvider(LLMProvider):
+    """OpenRouter provider implementation."""
+
+    def __init__(self, settings):
+        self.settings = settings
+        self.client = self._initialize_client()
+
+    def _initialize_client(self) -> Any:
+        return instructor.from_openai(OpenAI(api_key=self.settings.api_key, base_url=self.settings.base_url))
+    
+    def create_completion(
+        self, response_model: Type[BaseModel], messages: List[Dict[str, str]], **kwargs
+    ) -> Any:
+        completion_params = {
+            "model": kwargs.get("model", self.settings.default_model),
+            "temperature": kwargs.get("temperature", self.settings.temperature),
+            "max_retries": kwargs.get("max_retries", self.settings.max_retries),
+            "max_tokens": kwargs.get("max_tokens", self.settings.max_tokens),
+            "response_model": response_model,
+            "messages": messages,
+        }
+        return self.client.chat.completions.create_with_completion(**completion_params)
 
 class OpenAIProvider(LLMProvider):
     """OpenAI provider implementation."""
@@ -140,6 +162,7 @@ class LLMFactory:
             "openai": OpenAIProvider,
             "anthropic": AnthropicProvider,
             "llama": LlamaProvider,
+            "openrouter": OpenRouterProvider,
         }
         provider_class = providers.get(self.provider)
         if provider_class:
