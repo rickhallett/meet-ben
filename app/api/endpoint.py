@@ -67,7 +67,6 @@ async def handle_ottomator_event(
     conversation_history = None
     messages = []
     event = None
-    task_id = None
 
     try:
         # Fetch conversation history
@@ -104,7 +103,9 @@ async def handle_ottomator_event(
         except Exception as e:
             print(f"Error queuing task: {str(e)}")
             raise Exception(f"Failed to queue task: {str(e)}")
-
+        
+        print(task)
+        print(type(task))
         # Store user's query
         try:
             await otto_db.store_message(
@@ -114,7 +115,7 @@ async def handle_ottomator_event(
                 data={
                     "request_id": str(request.request_id),
                     "event_id": str(event.id),
-                    "task_id": str(task.id)
+                    "task_id": str(task)
                 }
             )
         except Exception as e:
