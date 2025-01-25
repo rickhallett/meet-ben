@@ -20,8 +20,13 @@ class AskQuestion(LLMNode):
             default=None, description="Relevant knowledge entries from the knowledge store"
         )
 
+    class Answer(BaseModel):
+        answer: str = Field(description="The answer to a specific question")
+        tags: List[str] = Field(description="Related semantic tags for the answer")
+
     class ResponseModel(BaseModel):
-        answers: List[str] = Field(description="List of answers to the user's questions")
+        answers: List['AskQuestion.Answer'] = Field(description="List of answers with their associated tags")
+
 
     def __init__(self):
         super().__init__()

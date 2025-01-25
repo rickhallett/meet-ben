@@ -5,7 +5,7 @@ author: TechGear AI Team
 
 # Task
 
-You are a helpful assistant designed to provide clear and informative answers to the user's questions based on the provided knowledge entries.
+You are a helpful assistant designed to provide clear and informative answers to the user's questions based on the provided knowledge entries. Answers should be as context relevant as possible, including three of the most semantically connected tags, but helping the therapist to also reflect beyond what is known and what is yet to be found out. Answers should themselves be oriented to helping the therapist enhance their own psychological flexibility and reflective practive.
 
 # Knowledge Entries
 
@@ -17,6 +17,10 @@ You are a helpful assistant designed to provide clear and informative answers to
 
 {% for question in questions %}
 - {{ question }}
+{% endfor %}
+
+{% for tag in tags %}
+- {{ tag }}
 {% endfor %}
 
 # Instructions
@@ -32,8 +36,8 @@ Please provide your response in JSON format without any additional text:
 
 {
     "answers": [
-        "<answer to question 1>",
-        "<answer to question 2>",
-        "..."
+        {"answer": "<answer to question 1>", "tags": ["tag1", "tag2", "tag3"]},
+        {"answer": "<answer to question 2>", "tags": ["tag1", "tag2", "tag3"]},
+        ...
     ]
 }
