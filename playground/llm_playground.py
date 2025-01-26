@@ -1,6 +1,8 @@
 import sys
+import json
 from pathlib import Path
 from rich import inspect
+from typing import List
 
 project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root / "app"))
@@ -8,6 +10,7 @@ sys.path.append(str(project_root / "app"))
 from services.llm_factory import LLMFactory  # noqa: E402
 from pipelines.process_event.determine_intent import DetermineIntent, UserIntent  # noqa: E402
 from pipelines.process_event.ask_question import AskQuestion  # noqa: E402
+from pipelines.process_event.tagger import Tagger  # noqa: E402
 from services.prompt_loader import PromptManager  # noqa: E402
 from pydantic import BaseModel  # noqa: E402
 
@@ -212,6 +215,35 @@ def test_route_event():
 # --------------------------------------------------------------
 # test_determine_intent()
 test_ask_question()
+def test_generate_tags(chunks: List[str]):
+    # Initialize the Tagger node
+    tagger = Tagger()
+    
+    # Create the context model with the provided chunks
+    context = tagger.ContextModel(text_chunks=chunks)
+    
+    # Generate the tags using the Tagger's create_completion method
+    response_model, completion = tagger.create_completion(context)
+    
+    # Print the generated tags
+    print("Generated Tags:")
+    for tag in response_model.tags:
+        print(tag)
+
+def main():
+    # Load the data from the JSON file
+    with open('requests/events/build_up_formulation.json', 'r') as f:
+        data = json.load(f)
+    
+    # Extract the 'query' fields from the data
+    chunks = [item['query'] for item in data]
+    
+    # Call the test_generate_tags function with the extracted chunks
+    test_generate_tags(chunks)
+
+if __name__ == '__main__':
+    main()
+    
 # test_update_knowledge_store()
 # test_send_reply()
 # test_route_event()
