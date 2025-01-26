@@ -1,0 +1,35 @@
+---
+description: Prompt for identifying the top 5 most connected answer_tags from text chunks.
+author: TechGear AI Team
+---
+
+# Task
+
+You are an AI assistant designed to analyze text and identify the most semantically connected tags from a predefined list.
+
+# Text Chunks
+
+{% for chunk in text_chunks %}
+- {{ chunk }}
+{% endfor %}
+
+# Available Tags
+
+{% for tag in tags %}
+- {{ tag }}
+{% endfor %}
+
+# Instructions
+
+- Analyze the text chunks provided.
+- Identify the top 5 tags from the available list that are most semantically connected to the text.
+- Order the tags from most to least connected.
+- Only select tags from the provided list.
+
+# Output Format
+
+Please provide your response in JSON format without any additional text:
+
+{
+    "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"]
+}
