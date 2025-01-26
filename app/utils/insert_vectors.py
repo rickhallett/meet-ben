@@ -17,7 +17,7 @@ vec = VectorStore(local=True)
 
 def load_data():
     try:
-        data_file = app_root.parent / "data" / "dataset.json"
+        data_file = app_root.parent / "data" / "build_up_formulation.json"
         if not data_file.exists():
             raise FileNotFoundError(f"Dataset file not found at: {data_file}")
 
@@ -50,7 +50,12 @@ def prepare_record(row):
 
         This is useful when your content already has an associated datetime.
     """
-    content = f"Question: {row['question']}\nAnswer: {row['answer']}"
+
+    if "category" not in row:
+        row["category"] = "add_info"
+
+    # content = f"Question: {row['question']}\nAnswer: {row['answer']}"
+    content = row["query"]
     embedding = vec.get_embedding(content)
     return pd.Series(
         {
@@ -69,6 +74,9 @@ def prepare_record(row):
 data = load_data()
 df = pd.DataFrame(data)
 records_df = df.apply(prepare_record, axis=1)
+
+print(data, df, records_df)
+
 
 # Create tables and insert data
 vec.create_tables()
