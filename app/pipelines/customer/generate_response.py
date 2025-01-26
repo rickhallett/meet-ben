@@ -53,7 +53,7 @@ class GenerateResponse(LLMNode):
         self, context: ContextModel
     ) -> tuple[ResponseModel, list[str]]:
         rag_context = self.search_kb(context.body)
-        llm = LLMFactory("openrouter")
+        llm = LLMFactory(config.LLM_PROVIDER)
         SYSTEM_PROMPT = PromptManager.get_prompt(template="customer_ticket_response")
         response_model, completion = llm.create_completion(
             response_model=self.ResponseModel,

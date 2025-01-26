@@ -44,7 +44,7 @@ class GenerateResponse(LLMNode):
         self, context: ContextModel
     ) -> Tuple[ResponseModel, Any]:
         logging.info("Generating response for the user's message")
-        llm = LLMFactory("openrouter")
+        llm = LLMFactory(config.LLM_PROVIDER)
         SYSTEM_PROMPT = PromptManager.get_prompt(template="generate_response")
         
         # Prepare messages for the LLM

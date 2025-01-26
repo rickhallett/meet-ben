@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 import os
@@ -8,7 +8,23 @@ load_dotenv()
 """
 Configuration for LLM providers.
 """
+class Config():
+    """App wide configuration"""
+    __llm_provider: str = "openrouter"
+    __available_llm_providers: List[str] = ["openrouter", "openai", "anthropic", "llama"]
 
+    @property
+    def LLM_PROVIDER(self):
+        return self.__llm_provider
+
+    @LLM_PROVIDER.setter
+    def LLM_PROVIDER(self, value):
+        if value not in self.__available_llm_providers:
+            raise ValueError(f"Invalid LLM provider: {value}. Available providers: {self.__available_llm_providers}")
+        self.__llm_provider = value
+
+
+config = Config()
 
 class LLMProviderSettings(BaseSettings):
     """Base settings for LLM providers."""
@@ -22,7 +38,7 @@ class OpenAISettings(LLMProviderSettings):
     """Settings for OpenAI."""
 
     api_key: str = os.getenv("OPENAI_API_KEY")
-    default_model: str = "gpt-4o"
+    default_model: str = "gpt-4o/mini"
     embedding_model: str = "text-embedding-3-small"
 
 

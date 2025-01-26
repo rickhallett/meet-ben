@@ -50,7 +50,7 @@ class KnowledgeGapCheck(LLMNode):
         self, context: ContextModel
     ) -> Tuple[ResponseModel, Any]:
         prompt_template = PromptManager.get_prompt(template="knowledge_gap_check.j2")
-        llm = LLMFactory("openrouter")
+        llm = LLMFactory(config.LLM_PROVIDER)
         
         messages = [
             {

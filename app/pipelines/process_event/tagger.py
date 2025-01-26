@@ -26,7 +26,7 @@ class Tagger(LLMNode):
         return self.ContextModel(text_chunks=text_chunks)
 
     def create_completion(self, context: ContextModel) -> Tuple[ResponseModel, Any]:
-        llm = LLMFactory("openrouter")
+        llm = LLMFactory(config.LLM_PROVIDER)
         prompt_template = PromptManager.get_prompt("generate_tags")
 
         prompt = prompt_template.render(

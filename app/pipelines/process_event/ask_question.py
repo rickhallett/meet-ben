@@ -64,7 +64,7 @@ class AskQuestion(LLMNode):
     def create_completion(
         self, context: ContextModel
     ) -> Tuple[ResponseModel, Any]:
-        llm = LLMFactory("openrouter")
+        llm = LLMFactory(config.LLM_PROVIDER)
         prompt_template = PromptManager.get_prompt("ask_question")
 
         prompt = prompt_template.render(

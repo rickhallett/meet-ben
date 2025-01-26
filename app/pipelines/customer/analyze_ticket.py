@@ -4,6 +4,7 @@ from core.llm import LLMNode
 from services.prompt_loader import PromptManager
 from pydantic import BaseModel, Field
 from services.llm_factory import LLMFactory
+from config.llm_config import config
 
 
 class CustomerIntent(str, Enum):
@@ -45,7 +46,7 @@ class AnalyzeTicket(LLMNode):
         )
 
     def create_completion(self, context: ContextModel) -> ResponseModel:
-        llm = LLMFactory("openrouter")
+        llm = LLMFactory(config.LLM_PROVIDER)
         prompt = PromptManager.get_prompt(
             "ticket_analysis",
             pipeline="support",

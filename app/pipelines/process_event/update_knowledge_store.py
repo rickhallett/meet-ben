@@ -47,7 +47,7 @@ class UpdateKnowledgeStore(LLMNode):
         ]
 
         # Initialize the LLM client
-        llm = LLMFactory("openrouter")
+        llm = LLMFactory(config.LLM_PROVIDER)
 
         # Create the completion
         response_model, completion = llm.create_completion(
