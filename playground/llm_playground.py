@@ -208,60 +208,6 @@ def test_ask_question():
             print(f"Tags: {', '.join(answer.tags)}\n")
             print("-" * 80)
 
-def test_generate_tags(chunks: List[str]):
-    event = EventSchema(
-        query='<A long string of text that has been chunked>',
-        user_id='test_user',
-        request_id='test_request',
-        session_id='test_session',
-    )
-
-    # Initialize the Tagger node with parallel processing disabled
-    tagger = Tagger(enable_parallel=False)
-
-    # Create a TaskContext
-    initial_ctx = TaskContext(event=event, metadata={"text_chunks": chunks})
-
-    # Process the task context
-    final_ctx = tagger.process(initial_ctx)
-
-    # Retrieve the response model from the task context
-    response_model = final_ctx.nodes[tagger.node_name]['response_model']
-
-    # Assert that the generated tags for each chunk are correct
-    for tagged_chunk in response_model.tagged_chunks:
-        assert tagged_chunk['chunk'] in chunks
-        assert len(tagged_chunk['tags']) == 5
-        assert len(tagged_chunk['reasoning']) > 0
-        assert all(tag in tags for tag in tagged_chunk['tags'])
-
-def test_generate_tags_in_parallel(chunks: List[str]):
-    event = EventSchema(
-        query='<A long string of text that has been chunked>',
-        user_id='test_user',
-        request_id='test_request',
-        session_id='test_session',
-    )
-
-    # Create a TaskContext
-    initial_ctx = TaskContext(event=event, metadata={"text_chunks": chunks})
-
-    # Initialize the Tagger node with parallel processing enabled
-    tagger = Tagger(enable_parallel=True)
-
-    # Process the task context
-    final_ctx = tagger.process(initial_ctx)
-
-    # Retrieve the response model from the task context
-    response_model = final_ctx.nodes[tagger.node_name]['response_model']
-    inspect(response_model, title="response_model")
-
-    # Assert that the generated tags for each chunk are correct
-    for tagged_chunk in response_model.tagged_chunks:
-        assert tagged_chunk['chunk'] in chunks
-        assert len(tagged_chunk['tags']) == 5
-        assert len(tagged_chunk['reasoning']) > 0
-        assert all(tag in tags for tag in tagged_chunk['tags'])
 
 def test_generate_tags_task_context():
     pass
