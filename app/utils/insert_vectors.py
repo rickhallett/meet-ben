@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 
 app_root = Path(__file__).parent.parent
+print("inserting vectors app_root", app_root)
 sys.path.append(str(app_root))
 
 import json  # noqa: E402

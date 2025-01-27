@@ -5,6 +5,7 @@ from core.task import TaskContext
 from services.prompt_loader import PromptManager
 from services.llm_factory import LLMFactory
 from pydantic import BaseModel, Field
+from config.llm_config import config
 
 class UserIntent(str, Enum):
     ADD_INFORMATION = "add_information"
