@@ -12,7 +12,7 @@ class TextSplitter(LLMNode):
     Ensures chunks are between min_words and max_words in length and end at sentence boundaries.
     """
 
-    def __init__(self, min_words: int = 50, max_words: int = 200):
+    def __init__(self, min_words: int = 25, max_words: int = 200):
         super().__init__()
         self.min_words = min_words
         self.max_words = max_words
