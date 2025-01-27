@@ -14,6 +14,7 @@ from services.llm_factory import LLMFactory  # noqa: E402
 from pipelines.process_event.determine_intent import DetermineIntent, UserIntent  # noqa: E402
 from pipelines.process_event.ask_question import AskQuestion  # noqa: E402
 from pipelines.process_event.tagger import Tagger  # noqa: E402
+from pipelines.process_event.chunk_splitter import TextSplitter  # noqa: E402
 from services.prompt_loader import PromptManager  # noqa: E402
 from utils.timer import timer  # noqa: E402
 from pydantic import BaseModel  # noqa: E402
@@ -264,8 +265,40 @@ def test_generate_tags_in_parallel(chunks: List[str]):
 def test_generate_tags_task_context():
     pass
 
-def test_update_knowledge_store():
+def test_text_splitter(large_query: str):
+    """Test the TextSplitter node's ability to split text into coherent chunks."""
+    event = EventSchema(
+        query=large_query,
+        user_id='test_user',
+        request_id='test_request',
+        session_id='test_session',
+    )
 
+    # Initialize TextSplitter with word limits
+    splitter = TextSplitter(min_words=50, max_words=200)
+    
+    # Create and process TaskContext
+    initial_ctx = TaskContext(event=event)
+    final_ctx = splitter.process(initial_ctx)
+    
+    # Get response model from context
+    response_model = final_ctx.nodes[splitter.node_name]['response_model']
+    
+    # Validate chunks
+    for chunk in response_model.chunks:
+        # Count words in chunk
+        word_count = len(chunk.split())
+        
+        # Assert chunk length is within bounds
+        assert word_count >= splitter.min_words, f"Chunk too short: {word_count} words"
+        assert word_count <= splitter.max_words, f"Chunk too long: {word_count} words"
+        
+        # Assert chunk ends with a period
+        assert chunk.strip().endswith('.'), f"Chunk doesn't end with period: {chunk[-10:]}"
+        
+    print(f"Successfully split text into {len(response_model.chunks)} valid chunks")
+
+def test_update_knowledge_store():
     pass
 
 def test_send_reply():
@@ -282,18 +315,24 @@ def test_route_event():
 
 def main():
     # Load the data from the JSON file
-    with open(project_root / 'requests/events/build_up_formulation.json', 'r') as f:
-        data = json.load(f)
+    # with open(project_root / 'requests/events/build_up_formulation.json', 'r') as f:
+    #     data = json.load(f)
     
     # Extract the 'query' fields from the data
-    chunks = [item['query'] for item in data]
+    # chunks = [item['query'] for item in data]
     
     # Call the test_generate_tags function with the extracted chunks
     # with timer("test_generate_tags"):
         # test_generate_tags(chunks)
 
-    with timer("test_generate_tags_in_parallel"):
-        test_generate_tags_in_parallel(chunks)
+    # with timer("test_generate_tags_in_parallel"):
+    #     test_generate_tags_in_parallel(chunks)
+
+    with open(project_root / 'requests/events/large_query.json', 'r') as f:
+        large_query = json.load(f)['query']
+
+    with timer("test_text_splitter"):
+        test_text_splitter(large_query)
 
 if __name__ == '__main__':
     main()
