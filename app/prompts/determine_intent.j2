@@ -7,9 +7,9 @@ author: TechGear AI Team
 
 Analyze the following user message and determine the intent. The possible intents are:
 
-- "add_information"
-- "ask_question" 
-- "ask_for_suggestions"
+{% for intent in possible_intents %}
+- {{ intent }}
+{% endfor %}
 
 # Instructions
 

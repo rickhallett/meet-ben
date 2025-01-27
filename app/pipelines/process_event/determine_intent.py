@@ -11,6 +11,11 @@ class UserIntent(str, Enum):
     ADD_INFORMATION = "add_information"
     ASK_QUESTION = "ask_question"
     ASK_FOR_SUGGESTIONS = "ask_for_suggestions"
+    UNKNOWN = "unknown_intent"
+
+    @classmethod
+    def get_possible_intents(cls):
+        return [intent.value for intent in cls]
 
 class DetermineIntent(LLMNode):
     """Node for determining the intent of a user's message."""
@@ -41,7 +46,7 @@ class DetermineIntent(LLMNode):
         self, context: ContextModel
     ) -> Tuple[ResponseModel, Any]:
         # Load the prompt template
-        prompt = PromptManager.get_prompt("determine_intent")
+        prompt = PromptManager.get_prompt("determine_intent", possible_intents=UserIntent.get_possible_intents())
 
         # Prepare the messages
         messages = [
