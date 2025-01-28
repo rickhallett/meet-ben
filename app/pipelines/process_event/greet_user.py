@@ -1,4 +1,4 @@
-from core.node import Node
+from core.base import Node
 from core.schema import TaskContext
 from database.repository import GenericRepository
 from api.dependencies import db_session

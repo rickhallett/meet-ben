@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from core.task import TaskContext
 from services.llm_factory import LLMFactory
 from services.vector_store import VectorStore
+from config import config
 
 
 class GenerateResponse(LLMNode):
