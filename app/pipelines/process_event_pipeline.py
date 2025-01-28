@@ -13,6 +13,7 @@ from pipelines.process_event.generate_response import GenerateResponse
 from pipelines.process_event.suggestion import Suggestion
 from pipelines.process_event.send_reply import SendReply
 from pipelines.process_event.clear_knowledge_store import ClearKnowledgeStore
+from pipelines.process_event.switch_client import SwitchClient
 
 
 class ProcessEventPipeline(Pipeline):
@@ -78,6 +79,11 @@ class ProcessEventPipeline(Pipeline):
                 node=ClearKnowledgeStore,
                 connections=[GenerateResponse],
                 description="Clear the knowledge store and switch to another client",
+            ),
+            NodeConfig(
+                node=SwitchClient,
+                connections=[GenerateResponse],
+                description="Switches the active client based on user input",
             ),
             NodeConfig(
                 node=GenerateResponse,
