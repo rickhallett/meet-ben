@@ -14,6 +14,7 @@ from pipelines.process_event.suggestion import Suggestion
 from pipelines.process_event.send_reply import SendReply
 from pipelines.process_event.clear_knowledge_store import ClearKnowledgeStore
 from pipelines.process_event.switch_client import SwitchClient
+from pipelines.process_event.exit import Exit
 
 
 class ProcessEventPipeline(Pipeline):
@@ -84,6 +85,11 @@ class ProcessEventPipeline(Pipeline):
                 node=SwitchClient,
                 connections=[GenerateResponse],
                 description="Switches the active client based on user input",
+            ),
+            NodeConfig(
+                node=Exit,
+                connections=[GenerateResponse],
+                description="Removes the active client and provides a goodbye message",
             ),
             NodeConfig(
                 node=GenerateResponse,
