@@ -8,6 +8,8 @@ from services.prompt_loader import PromptManager
 from services.llm_factory import LLMFactory
 from services.vector_store import VectorStore
 from pydantic import BaseModel, Field
+from config.llm_config import config
+from prompts.answer_tags import tags
 
 
 class UpdateKnowledgeStore(LLMNode):
@@ -16,12 +18,12 @@ class UpdateKnowledgeStore(LLMNode):
     """
 
     class ContextModel(BaseModel):
-        message_content: str = Field(description="The content of the user's message")
+        query: str = Field(description="The query of the user")
         user_id: str = Field(description="Unique identifier for the user")
         session_id: str = Field(description="Unique identifier for the session")
 
     class ResponseModel(BaseModel):
-        knowledge_entries: List[str] = Field(description="List of knowledge entries extracted from the message")
+        knowledge_entries: List[str] = Field(description="List of knowledge entries extracted from the message, including tags")
 
     def __init__(self):
         super().__init__()
@@ -29,7 +31,7 @@ class UpdateKnowledgeStore(LLMNode):
 
     def get_context(self, task_context: TaskContext) -> ContextModel:
         return self.ContextModel(
-            message_content=task_context.event.message_content,
+            query=task_context.event.query,
             user_id=task_context.event.user_id,
             session_id=task_context.event.session_id,
         )
@@ -38,12 +40,12 @@ class UpdateKnowledgeStore(LLMNode):
         self, context: ContextModel
     ) -> Tuple[ResponseModel, Any]:
         # Load the prompt template
-        prompt = PromptManager.get_prompt("update_knowledge_store")
+        prompt = PromptManager.get_prompt("update_knowledge_store", tags=tags, message_content=context.query)
 
         # Prepare the messages
         messages = [
-            {"role": "system", "content": prompt},
-            {"role": "user", "content": context.message_content},
+            {"role": "system", "content": "You are a helpful assistant that extracts knowledge entries from the user's message to update the knowledge store."},
+            {"role": "user", "content": prompt},
         ]
 
         # Initialize the LLM client

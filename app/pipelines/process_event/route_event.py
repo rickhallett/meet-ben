@@ -13,7 +13,7 @@ class InstructionRouter(RouterNode):
     def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
         # Check for the "give_instructions" command in shared context flow
         command = task_context.metadata.get('command')
-        if command == "give_instructions":
+        if command == "/help":
             return Instruction()
         return None
 

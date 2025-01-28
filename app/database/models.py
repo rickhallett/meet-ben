@@ -12,22 +12,22 @@ Database Models Module
 This module defines the SQLAlchemy models for storing data in the database.
 """
 
-class UserSession(Base):
-    """SQLAlchemy model for storing user sessions.
+class UserClients(Base):
+    """SQLAlchemy model for storing user clients.
 
     Attributes:
         id: Auto-incremented integer primary key.
         user_id: String identifier for the user.
-        created_at: Timestamp of when the session was created.
+        created_at: Timestamp of when the client was created.
     """
 
-    __tablename__ = "user_sessions"
+    __tablename__ = "user_clients"
 
     id = Column(
         Integer,
         primary_key=True,
         autoincrement=True,
-        doc="Unique identifier for the user session",
+        doc="Unique identifier for the user client",
     )
     user_id = Column(
         String,
@@ -37,33 +37,33 @@ class UserSession(Base):
     created_at = Column(
         DateTime,
         default=datetime.utcnow,
-        doc="Timestamp when the session was created",
+        doc="Timestamp when the client was created",
     )
 
-class ActiveSession(Base):
-    """SQLAlchemy model for tracking active user sessions.
+class ActiveClient(Base):
+    """SQLAlchemy model for tracking active user clients.
 
     Attributes:
         user_id: String identifier for the user (primary key).
-        session_id: Associated session ID from UserSession.
-        created_at: Timestamp of when the active session was started.
+        client_id: Associated client ID from UserClients.
+        created_at: Timestamp of when the active client was started.
     """
 
-    __tablename__ = "active_sessions"
+    __tablename__ = "active_clients"
 
     user_id = Column(
         String,
         primary_key=True,
         doc="Unique identifier for the user",
     )
-    session_id = Column(
+    client_id = Column(
         Integer,
-        ForeignKey("user_sessions.id"),
+        ForeignKey("user_clients.id"),
         nullable=False,
-        doc="Identifier for the user session",
+        doc="Identifier for the user client",
     )
     created_at = Column(
         DateTime,
         default=datetime.utcnow,
-        doc="Timestamp when the active session was started",
+        doc="Timestamp when the active client was started",
     )

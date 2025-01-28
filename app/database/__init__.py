@@ -1,3 +1,3 @@
-from database.models import Base, UserSession, ActiveSession, Event
+from database.models import Base, UserClients, ActiveSession, Event
 
-__all__ = ["Base", "UserSession", "ActiveSession", "Event"]
+__all__ = ["Base", "UserClients", "ActiveSession", "Event"]
