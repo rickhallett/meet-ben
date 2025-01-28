@@ -10,6 +10,7 @@ from pipelines.process_event.knowledge_gap_check import KnowledgeGapCheck
 from pipelines.process_event.ask_question import AskQuestion
 from pipelines.process_event.update_knowledge_store import UpdateKnowledgeStore
 from pipelines.process_event.generate_response import GenerateResponse
+from pipelines.process_event.suggestion import Suggestion
 from pipelines.process_event.send_reply import SendReply
 
 
@@ -66,6 +67,11 @@ class ProcessEventPipeline(Pipeline):
                 node=UpdateKnowledgeStore,
                 connections=[GenerateResponse],
                 description="Update the knowledge store with information from the message",
+            ),
+            NodeConfig(
+                node=Suggestion,
+                connections=[GenerateResponse],
+                description="Provide suggestions based on the user's query and knowledge store",
             ),
             NodeConfig(
                 node=GenerateResponse,

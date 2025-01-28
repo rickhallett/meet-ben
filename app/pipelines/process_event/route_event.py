@@ -7,6 +7,7 @@ from pipelines.process_event.knowledge_gap_check import KnowledgeGapCheck
 from pipelines.process_event.update_knowledge_store import UpdateKnowledgeStore
 from pipelines.process_event.ask_question import AskQuestion
 from pipelines.process_event.instruction import Instruction
+from pipelines.process_event.suggestion import Suggestion
 
 
 class CommandRouter(RouterNode):
@@ -24,9 +25,8 @@ class CommandRouter(RouterNode):
                 return UpdateKnowledgeStore()
             case '/question':
                 return AskQuestion()
-            case '/suggest': 
-                # return Suggestion()
-                pass
+            case '/suggest':
+                return Suggestion()
             case '/clear':
                 # return ClearKnowledgeStore()
                 pass
@@ -43,6 +43,18 @@ class InstructionRouter(RouterNode):
     def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
         return None
 
+class SuggestionRouter(RouterNode):
+    def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
+        determine_intent_result = task_context.nodes.get("DetermineIntent")
+        if not determine_intent_result:
+            return None
+
+        intent = determine_intent_result["response_model"].intent
+
+        if intent == "ask_for_suggestions":
+            return Suggestion()
+        return None
+
 class EventRouter(BaseRouter):
     """
     Router node that directs the flow based on the user's intent.
@@ -53,6 +65,7 @@ class EventRouter(BaseRouter):
             CommandRouter(),
             InstructionRouter(),
             QuestionRouter(),
+            SuggestionRouter(),
             KnowledgeGapRouter(),
         ]
         self.fallback = UpdateKnowledgeStore()

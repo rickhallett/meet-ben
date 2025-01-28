@@ -6,7 +6,7 @@ from services.llm_factory import LLMFactory
 from services.vector_store import VectorStore
 from typing import List, Dict, Optional, Tuple, Any
 import logging
-
+from config.llm_config import config
 class KnowledgeGapCheck(LLMNode):
     """Node that checks for gaps in knowledge based on the current conversation context."""
 
@@ -36,12 +36,12 @@ class KnowledgeGapCheck(LLMNode):
 
     def get_context(self, task_context: TaskContext) -> ContextModel:
         relevant_context = self.vector_store.semantic_search(
-            query=task_context.event.message,
+            query=task_context.event.query,
             limit=5
         )
         
         return self.ContextModel(
-            message=task_context.event.message,
+            message=task_context.event.query,
             conversation_history=task_context.conversation_history,
             relevant_context=[r["content"] for r in relevant_context]
         )
