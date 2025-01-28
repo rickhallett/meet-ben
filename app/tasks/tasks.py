@@ -18,7 +18,6 @@ pipeline execution and result storage.
 
 @celery_app.task(name="process_incoming_event")
 def process_incoming_event(event_id: str):
-    return
     """Processes an incoming event through its designated pipeline.
 
     This Celery task handles the asynchronous processing of events by:

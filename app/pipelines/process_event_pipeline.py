@@ -1,5 +1,6 @@
 from core.pipeline import Pipeline
 from core.schema import PipelineSchema, NodeConfig
+from pipelines.process_event.greet_user import GreetUser
 from pipelines.process_event.determine_intent import DetermineIntent
 from pipelines.process_event.route_event import EventRouter
 from pipelines.process_event.knowledge_gap_check import KnowledgeGapCheck
@@ -14,8 +15,13 @@ class ProcessEventPipeline(Pipeline):
 
     pipeline_schema = PipelineSchema(
         description="Pipeline for processing user events and updating the knowledge store",
-        start=DetermineIntent,
+        start=GreetUser,
         nodes=[
+            NodeConfig(
+                node=GreetUser,
+                connections=[DetermineIntent],
+                description="Greet the user if no active session exists",
+            ),
             NodeConfig(
                 node=DetermineIntent,
                 connections=[EventRouter],

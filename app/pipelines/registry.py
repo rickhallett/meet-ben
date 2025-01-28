@@ -2,6 +2,7 @@ import logging
 from typing import Dict, Type
 from api.event_schema import EventSchema
 from core.pipeline import Pipeline
+from pipelines.process_event_pipeline import ProcessEventPipeline
 
 
 """
@@ -30,37 +31,17 @@ class PipelineRegistry:
     """
 
     pipelines: Dict[str, Type[Pipeline]] = {
-        # "support": CustomerSupportPipeline, # Register your pipeline here
-        # "plain_request": PlainRequestPipeline,
+        "process_event": ProcessEventPipeline,
     }
 
     @staticmethod
-    def get_pipeline_type(event: EventSchema) -> str:
-        """
-        Implement your logic to determine the pipeline type based on the event.
-        
-        Example:
-            if event.to_email.split("@")[0] == "support":
-                return "support"
-        """
-        raise NotImplementedError(
-            "Pipeline routing logic not implemented. Please implement get_pipeline_type() "
-            "to determine the appropriate pipeline based on event attributes. "
-        ) 
-
-    @staticmethod
     def get_pipeline(event: EventSchema) -> Pipeline:
-        """Creates and returns the appropriate pipeline instance for the event.
+        """Creates and returns the process event pipeline instance.
 
         Args:
-            event: Event schema containing routing information
+            event: Event schema containing request information
 
         Returns:
-            Instantiated pipeline object for processing the event
+            Instantiated ProcessEventPipeline object
         """
-        pipeline_type = PipelineRegistry.get_pipeline_type(event)
-        pipeline = PipelineRegistry.pipelines.get(pipeline_type)
-        if pipeline:
-            logging.info(f"Using pipeline: {pipeline.__name__}")
-            return pipeline()
-        raise ValueError(f"Unknown pipeline type: {pipeline_type}")
+        return ProcessEventPipeline()

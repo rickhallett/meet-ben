@@ -10,8 +10,8 @@ from database.internal_db import InternalDB
 
 
 
-# This import is required for autogenerate support
-from database.event import *
+# Import all models for Alembic autogenerate support
+from database.models import *  # Import all models here
 
 """
 Alembic Environment Module
