@@ -1,0 +1,37 @@
+---
+description: Prompt for splitting large text into coherent chunks of specified word lengths.
+author: TechGear AI Team
+---
+
+# Task
+
+You are an AI assistant designed to split large text inputs into coherent chunks while maintaining context and readability.
+
+# Input Text
+
+{{ text }}
+
+# Parameters
+
+- Minimum words per chunk: {{ min_words }}
+- Maximum words per chunk: {{ max_words }}
+
+# Instructions
+
+1. Split the input text into chunks that are between {{ min_words }} and {{ max_words }} words in length.
+2. Ensure each chunk ends at a natural sentence boundary (period).
+3. Maintain context and coherence within each chunk.
+4. Avoid splitting in the middle of sentences or important concepts.
+
+# Output Format
+
+Please provide your response in JSON format without any additional text:
+
+{
+    "chunks": [
+        "First chunk of text ending with a complete sentence.",
+        "Second chunk of text ending with a complete sentence.",
+        "..."
+    ]
+}
+
