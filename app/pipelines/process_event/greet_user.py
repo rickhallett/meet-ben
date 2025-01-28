@@ -16,7 +16,9 @@ class GreetUser(Node):
             active_session = active_session_repo.get(user_id=user_id)
 
             if active_session:
-                task_context.skip_greeting = True
+                task_context.nodes[self.node_name] = {
+                    "skip_greeting": True
+                }
             else:
                 user_session_repo = GenericRepository(session=session, model=UserSession)
                 new_session = UserSession(user_id=user_id)
@@ -25,7 +27,9 @@ class GreetUser(Node):
                 active_session = ActiveSession(user_id=user_id, session_id=new_session.id)
                 active_session_repo.create(active_session)
                 
-                task_context.response_message = INTRODUCTORY_MESSAGE
-                task_context.terminate_pipeline = True
+                task_context.nodes[self.node_name] = {
+                    "response_model": INTRODUCTORY_MESSAGE,
+                    "skip_greeting": False
+                }
 
         return task_context

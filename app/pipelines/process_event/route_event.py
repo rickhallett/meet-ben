@@ -6,7 +6,16 @@ from core.router import BaseRouter, RouterNode
 from pipelines.process_event.knowledge_gap_check import KnowledgeGapCheck
 from pipelines.process_event.update_knowledge_store import UpdateKnowledgeStore
 from pipelines.process_event.ask_question import AskQuestion
+from pipelines.process_event.instruction import Instruction
 
+
+class InstructionRouter(RouterNode):
+    def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
+        # Check for the "give_instructions" command in shared context flow
+        command = task_context.metadata.get('command')
+        if command == "give_instructions":
+            return Instruction()
+        return None
 
 class EventRouter(BaseRouter):
     """
@@ -15,6 +24,7 @@ class EventRouter(BaseRouter):
 
     def __init__(self):
         self.routes = [
+            InstructionRouter(),
             QuestionRouter(),
             KnowledgeGapRouter(),
         ]

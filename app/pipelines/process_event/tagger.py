@@ -40,9 +40,13 @@ class Tagger(LLMNode):
         # tags: List[str] = Field(description="Top 5 most connected answer_tags, ordered descending")
 
     def get_context(self, task_context: TaskContext) -> ContextModel:
-        text_chunks = task_context.metadata.get('text_chunks', [])
+        chunk_splitter_result = task_context.nodes.get("ChunkSplitter")
+        if not chunk_splitter_result:
+            raise ValueError("ChunkSplitter node results not found in task context.")
+
+        text_chunks = chunk_splitter_result["text_chunks"]
         if not text_chunks:
-            raise ValueError("No text chunks found in the task context.")
+            raise ValueError("No text chunks found in ChunkSplitter results.")
 
         return self.ContextModel(text_chunks=text_chunks)
 

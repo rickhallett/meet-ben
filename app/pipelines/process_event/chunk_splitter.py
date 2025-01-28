@@ -60,9 +60,7 @@ class TextSplitter(LLMNode):
         task_context.nodes[self.node_name] = {
             "response_model": response_model,
             "usage": completion.usage,
+            "text_chunks": response_model.chunks
         }
-        
-        # Add chunks to metadata for downstream nodes
-        task_context.metadata["text_chunks"] = response_model.chunks
         
         return task_context
