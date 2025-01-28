@@ -27,10 +27,13 @@ class GreetUser(Node):
             active_client = active_client_repo.get(user_id=user_id)
 
             if active_client:
+                # User has an active client; provide a brief greeting
                 task_context.nodes[self.node_name] = {
-                    "skip_greeting": True
+                    "skip_greeting": True,
+                    "response_model": "Welcome back! How can I assist you today?"
                 }
             else:
+                # New user; create a new client and provide the introductory message
                 user_client_repo = GenericRepository(session=session, model=UserClients)
                 new_client = UserClients(user_id=user_id)
                 user_client_repo.create(new_client)
@@ -39,8 +42,8 @@ class GreetUser(Node):
                 active_client_repo.create(active_client)
                 
                 task_context.nodes[self.node_name] = {
-                    "response_model": INTRODUCTORY_MESSAGE,
-                    "skip_greeting": False
+                    "skip_greeting": False,
+                    "response_model": INTRODUCTORY_MESSAGE
                 }
 
         return task_context

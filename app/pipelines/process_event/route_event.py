@@ -17,12 +17,25 @@ class CommandRouter(RouterNode):
     def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
         command = task_context.nodes.get('CommandParser', {}).get('command')
 
-        if command == '/help':
-            return Instruction()
-        elif command == '/add':
-            return UpdateKnowledgeStore()
-        elif command == '/question':
-            return AskQuestion()
+        match command:
+            case '/help':
+                return Instruction()
+            case '/add':
+                return UpdateKnowledgeStore()
+            case '/question':
+                return AskQuestion()
+            case '/suggest': 
+                # return Suggestion()
+                pass
+            case '/clear':
+                # return ClearKnowledgeStore()
+                pass
+            case '/switch':
+                # return SwitchClient()
+                pass
+            case '/exit':
+            # return Exit()
+                pass
         return None
 
 

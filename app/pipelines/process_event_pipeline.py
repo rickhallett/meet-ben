@@ -5,6 +5,7 @@ from pipelines.process_event.greet_user import GreetUser
 from pipelines.process_event.determine_intent import DetermineIntent
 from pipelines.process_event.command_parser import CommandParser
 from pipelines.process_event.route_event import EventRouter
+from pipelines.process_event.greet_user_router import GreetUserRouter
 from pipelines.process_event.knowledge_gap_check import KnowledgeGapCheck
 from pipelines.process_event.ask_question import AskQuestion
 from pipelines.process_event.update_knowledge_store import UpdateKnowledgeStore
@@ -21,8 +22,14 @@ class ProcessEventPipeline(Pipeline):
         nodes=[
             NodeConfig(
                 node=GreetUser,
-                connections=[CommandParser],
-                description="Greet the user if no active session exists",
+                connections=[GreetUserRouter],
+                description="Greet the user and decide the next node based on user status",
+            ),
+            NodeConfig(
+                node=GreetUserRouter,
+                connections=[Instruction, CommandParser],
+                is_router=True,
+                description="Route to Instruction if new user, else to CommandParser",
             ),
             NodeConfig(
                 node=CommandParser,
@@ -42,8 +49,8 @@ class ProcessEventPipeline(Pipeline):
             ),
             NodeConfig(
                 node=Instruction,
-                connections=[SendReply],
-                description="Provide instructions to the user and proceed to send reply",
+                connections=[GenerateResponse],
+                description="Provide instructions to the user",
             ),
             NodeConfig(
                 node=AskQuestion,
@@ -63,7 +70,7 @@ class ProcessEventPipeline(Pipeline):
             NodeConfig(
                 node=GenerateResponse,
                 connections=[SendReply],
-                description="Generate a response based on the updated knowledge store",
+                description="Generate a response based on the actions taken and gathered responses",
             ),
             NodeConfig(
                 node=SendReply,
