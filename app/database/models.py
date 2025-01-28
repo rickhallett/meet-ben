@@ -34,6 +34,11 @@ class UserClients(Base):
         nullable=False,
         doc="Unique identifier for the user",
     )
+    name = Column(
+        String,
+        nullable=False,
+        doc="Name of the client",
+    )
     created_at = Column(
         DateTime,
         default=datetime.utcnow,
@@ -67,4 +72,3 @@ class ActiveClient(Base):
         default=datetime.utcnow,
         doc="Timestamp when the active client was started",
     )
-    

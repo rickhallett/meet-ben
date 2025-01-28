@@ -12,6 +12,7 @@ from pipelines.process_event.update_knowledge_store import UpdateKnowledgeStore
 from pipelines.process_event.generate_response import GenerateResponse
 from pipelines.process_event.suggestion import Suggestion
 from pipelines.process_event.send_reply import SendReply
+from pipelines.process_event.clear_knowledge_store import ClearKnowledgeStore
 
 
 class ProcessEventPipeline(Pipeline):
@@ -72,6 +73,11 @@ class ProcessEventPipeline(Pipeline):
                 node=Suggestion,
                 connections=[GenerateResponse],
                 description="Provide suggestions based on the user's query and knowledge store",
+            ),
+            NodeConfig(
+                node=ClearKnowledgeStore,
+                connections=[GenerateResponse],
+                description="Clear the knowledge store and switch to another client",
             ),
             NodeConfig(
                 node=GenerateResponse,

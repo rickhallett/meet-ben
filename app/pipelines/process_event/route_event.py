@@ -8,6 +8,7 @@ from pipelines.process_event.update_knowledge_store import UpdateKnowledgeStore
 from pipelines.process_event.ask_question import AskQuestion
 from pipelines.process_event.instruction import Instruction
 from pipelines.process_event.suggestion import Suggestion
+from pipelines.process_event.clear_knowledge_store import ClearKnowledgeStore
 
 
 class CommandRouter(RouterNode):
@@ -28,8 +29,7 @@ class CommandRouter(RouterNode):
             case '/suggest':
                 return Suggestion()
             case '/clear':
-                # return ClearKnowledgeStore()
-                pass
+                return ClearKnowledgeStore()
             case '/switch':
                 # return SwitchClient()
                 pass
