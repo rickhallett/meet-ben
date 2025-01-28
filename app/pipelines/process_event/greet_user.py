@@ -3,10 +3,21 @@ from core.schema import TaskContext
 from database.repository import GenericRepository
 from api.dependencies import db_session
 from database.models import ActiveClient, UserClients
+from database.ottomator_db import OttomatorDB
 
 INTRODUCTORY_MESSAGE = "Hello! I'm here to help. How can I assist you today?"
 
 class GreetUser(Node):
+    """
+    GreetUser node is responsible for greeting the user and creating a new client if one doesn't exist.
+    """
+
+
+    def __init__(self):
+        super().__init__()
+        self.otto_db = OttomatorDB()
+
+
     def process(self, task_context: TaskContext) -> TaskContext:
         event = task_context.event
         user_id = event.user_id

@@ -67,3 +67,4 @@ class ActiveClient(Base):
         default=datetime.utcnow,
         doc="Timestamp when the active client was started",
     )
+    

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from core.task import TaskContext
+from database.ottomator_db import OttomatorDB
 
 """
 Base Node Module
@@ -28,6 +29,9 @@ class Node(ABC):
         node_name: Auto-generated name based on the class name
     """
 
+    def __init__(self):
+        self.__otto_db = OttomatorDB()
+
     @property
     def node_name(self) -> str:
         """Gets the name of the node.
@@ -36,6 +40,10 @@ class Node(ABC):
             String name derived from the class name
         """
         return self.__class__.__name__
+
+    @property
+    def otto_db(self) -> OttomatorDB:
+        return self.__otto_db
 
     @abstractmethod
     def process(self, task_context: TaskContext) -> TaskContext:

@@ -124,7 +124,7 @@ async def handle_ottomator_event(
 
         # Get agent response (placeholder)
         try:
-            agent_response = "This is a sample agent response..."
+            agent_response = "Processing your request..."
             print(f"Agent response generated: {agent_response}")
         except Exception as e:
             print(f"Error generating agent response: {str(e)}")
