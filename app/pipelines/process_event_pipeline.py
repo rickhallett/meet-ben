@@ -3,6 +3,7 @@ from core.schema import PipelineSchema, NodeConfig
 from pipelines.process_event.instruction import Instruction
 from pipelines.process_event.greet_user import GreetUser
 from pipelines.process_event.determine_intent import DetermineIntent
+from pipelines.process_event.command_parser import CommandParser
 from pipelines.process_event.route_event import EventRouter
 from pipelines.process_event.knowledge_gap_check import KnowledgeGapCheck
 from pipelines.process_event.ask_question import AskQuestion
@@ -20,8 +21,13 @@ class ProcessEventPipeline(Pipeline):
         nodes=[
             NodeConfig(
                 node=GreetUser,
-                connections=[DetermineIntent],
+                connections=[CommandParser],
                 description="Greet the user if no active session exists",
+            ),
+            NodeConfig(
+                node=CommandParser,
+                connections=[EventRouter],
+                description="Parse the query for commands",
             ),
             NodeConfig(
                 node=DetermineIntent,
