@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from config.celery_config import celery_app
-from database.event import Event
+from database.models import Event
 from database.repository import GenericRepository
 from database.ottomator_db import OttomatorDB
 from fastapi import APIRouter, Depends
@@ -67,12 +67,13 @@ async def handle_ottomator_event(
     conversation_history = None
     messages = []
     event = None
+    task = None
 
     try:
         # Fetch conversation history
         try:
             conversation_history = await otto_db.fetch_conversation_history(request.session_id)
-            print(f"Conversation history fetched: {conversation_history}")
+            print(f"Conversation history fetched: {len(conversation_history)}")
         except Exception as e:
             print(f"Error fetching conversation history: {str(e)}")
             raise Exception(f"Failed to fetch conversation history: {str(e)}")
@@ -83,7 +84,7 @@ async def handle_ottomator_event(
                 {"role": msg["message"]["type"], "content": msg["message"]["content"]}
                 for msg in conversation_history
             ]
-            print(f"Messages converted: {messages}")
+            print(f"Messages converted: {len(messages)}")
         except Exception as e:
             print(f"Error converting conversation history: {str(e)}")
             raise Exception(f"Failed to convert conversation history: {str(e)}")
@@ -104,8 +105,6 @@ async def handle_ottomator_event(
             print(f"Error queuing task: {str(e)}")
             raise Exception(f"Failed to queue task: {str(e)}")
         
-        print(task)
-        print(type(task))
         # Store user's query
         try:
             await otto_db.store_message(
@@ -118,13 +117,14 @@ async def handle_ottomator_event(
                     "task_id": str(task)
                 }
             )
+            print(f"************USER MESSAGE STORED******************************************") 
         except Exception as e:
             print(f"Error storing user message: {str(e)}")
             raise Exception(f"Failed to store user message: {str(e)}")
 
         # Get agent response (placeholder)
         try:
-            agent_response = "Processing your request..."
+            agent_response = f"Processing request #{len(conversation_history)}..."
             print(f"Agent response generated: {agent_response}")
         except Exception as e:
             print(f"Error generating agent response: {str(e)}")
@@ -142,6 +142,7 @@ async def handle_ottomator_event(
                     "task_id": str(task.id)
                 }
             )
+            print(f"************OTTOMATOR RESPONSE STORED******************************************")
         except Exception as e:
             print(f"Error storing agent response: {str(e)}")
             raise Exception(f"Failed to store agent response: {str(e)}")

@@ -99,7 +99,7 @@ The Alembic environment is configured in `env.py`:
 
 ```python
 from database.session import Base
-from database.event import *  # Required for autogeneration
+from database.models import *  # Required for autogeneration
 
 target_metadata = Base.metadata
 
