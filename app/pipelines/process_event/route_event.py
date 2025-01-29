@@ -67,6 +67,9 @@ class EventRouter(BaseRouter):
             QuestionRouter(),
             SuggestionRouter(),
             KnowledgeGapRouter(),
+            ClearKnowledgeStoreRouter(),
+            SwitchClientRouter(),
+            ExitRouter()
         ]
         self.fallback = UpdateKnowledgeStore()
 
@@ -113,3 +116,24 @@ class KnowledgeGapRouter(RouterNode):
     @property
     def node_name(self) -> str:
         return self.__class__.__name__
+
+class ClearKnowledgeStoreRouter(RouterNode):
+    def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
+        command = task_context.nodes.get("CommandParser", {}).get("command")
+        if command == "/clear":
+            return ClearKnowledgeStore()
+        return None
+
+class SwitchClientRouter(RouterNode):
+    def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
+        command = task_context.nodes.get("CommandParser", {}).get("command")
+        if command == "/switch":
+            return SwitchClient()
+        return None
+
+class ExitRouter(RouterNode):
+    def determine_next_node(self, task_context: TaskContext) -> Optional[Node]:
+        command = task_context.nodes.get("CommandParser", {}).get("command")
+        if command == "/exit":
+            return Exit()
+        return None

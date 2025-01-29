@@ -37,7 +37,7 @@ class ProcessEventPipeline(Pipeline):
             ),
             NodeConfig(
                 node=CommandParser,
-                connections=[EventRouter],
+                connections=[DetermineIntent],
                 description="Parse the query for commands",
             ),
             NodeConfig(
@@ -47,7 +47,16 @@ class ProcessEventPipeline(Pipeline):
             ),
             NodeConfig(
                 node=EventRouter,
-                connections=[Instruction, AskQuestion, KnowledgeGapCheck, UpdateKnowledgeStore],
+                connections=[
+                    Instruction,
+                    AskQuestion,
+                    KnowledgeGapCheck,
+                    UpdateKnowledgeStore,
+                    Suggestion,
+                    ClearKnowledgeStore,
+                    SwitchClient,
+                    Exit
+                ],
                 is_router=True,
                 description="Route to the next node based on intent",
             ),
