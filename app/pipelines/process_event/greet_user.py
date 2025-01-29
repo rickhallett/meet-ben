@@ -1,5 +1,5 @@
 from core.base import Node
-from core.schema import TaskContext
+from core.task import TaskContext
 from database.repository import GenericRepository
 from api.dependencies import db_session
 from database.models import ActiveClient, UserClients
